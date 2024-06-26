@@ -1,34 +1,23 @@
 "use client"
-import { useEffect, useState } from "react";
-import { cookies } from "next/headers";
+
+import React from 'react';
+import { useState, useEffect } from 'react';
 
 const ThemeSwitcher: React.FC = () => {
 
   const light = "light";
-  const dark = "night";
+  const dark = "dark";
 
-  const cookieStore = cookies();
-
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return cookieStore.set('theme') || window.matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
-    }
-  });
+  if (typeof window === "undefined") return null; // Prevent SSR
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || light);
 
   useEffect(() => {
-    if (theme === dark) {
-      document.documentElement.classList.add(dark);
-    } else { 
-      document.documentElement.classList.remove(dark);
-    }
-
-    localStorage.setItem('theme', theme ? theme : light);
-  }, [theme])
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === dark ? light : dark);
+    setTheme(prevTheme => prevTheme === light ? dark : light);
   }
-
 
   return (
     <label className="flex cursor-pointer gap-2" onClick={toggleTheme}>
@@ -44,7 +33,7 @@ const ThemeSwitcher: React.FC = () => {
         strokeLinejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
       </svg>
-      <input type="checkbox" value={theme} readOnly className="toggle theme-controller" />
+      <input type="checkbox" checked={theme === light} value={theme} readOnly className="toggle theme-controller" />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"

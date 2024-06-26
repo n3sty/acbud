@@ -1,12 +1,6 @@
-import { AppProps } from "next/app";
 import React from "react";
-import Cookies from 'js-cookie';
 
-export async function getServerSideProps({ req }) {
-  const theme = req.cookies.theme || 'light';
-  return { props: { theme } };
-
-function Home({ Component, pageProps, theme }: AppProps & { theme: string } ) {
+function Home() {  
   return (
     <main className="flex dark:bg-base-300 flex-col items-center justify-between p-24">
       <div className="w-96 dark:bg-base-100 rounded-xl shadow-md p-8">
