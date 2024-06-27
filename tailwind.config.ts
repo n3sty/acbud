@@ -29,5 +29,7 @@ const config: Config = {
     logs: true,
     rtl: false,
   },
+
+  darkMode: 'selector'
 };
 export default config;
