@@ -1,7 +1,8 @@
 import BottomNav from "@/app/components/private/bottomnav";
-import { redirect } from "next/navigation";
-import { createClient } from "../utils/supabase/server";
 import Topnav from "@/app/components/private/topnav";
+
+import { redirect } from "next/navigation";
+import { createClient } from "@/app/utils/supabase/server";
 
 export default async function Layout({
   children,

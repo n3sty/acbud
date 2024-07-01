@@ -1,5 +1,4 @@
 import React from "react";
-import ThemeSwitcher from "@/app/components/navbar/themeswitcher";
 import Avatar from "@/app/components/private/avatar";
 
 function Topnav() {
