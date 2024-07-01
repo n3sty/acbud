@@ -1,8 +1,7 @@
-import React from "react";
 import ThemeSwitcher from "./themeswitcher";
 import Avatar from "./avatar";
 
-const Navbar: React.FC = () => {
+function Navbar() {
   return (
     <nav className="navbar justify-around bg-base-200 text-base-content">
       <div className="navbar-start p-4">
