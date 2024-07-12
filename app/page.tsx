@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
 import Navbar from "./components/public/_navbar";
+import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
 import { SubmitButton } from "./components/submit-button";
 
@@ -26,7 +26,7 @@ export default async function Login({
       );
     }
 
-    return redirect("/home");
+    return redirect("/feed");
   };
 
   const signUp = async (formData: FormData) => {
@@ -42,11 +42,7 @@ export default async function Login({
     });
 
     if (error) {
-      if (error) {
-        return redirect(
-          `/?message=${error.message}`
-        );
-      }
+      return redirect(`/?message=${error.message}`);
     }
 
     return redirect("/?message=Check your email for a verification link.");
