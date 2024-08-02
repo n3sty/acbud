@@ -1,4 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+
+import { useSession, signIn, signOut } from "next-auth/react";
+
 import Image from "next/image";
 import {
   MagnifyingGlassIcon,
@@ -9,12 +13,11 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/20/solid";
-import { SignIn } from "./SignIn";
-// import { SignOut } from "./SignOut";
-import { auth, signOut } from "@/auth";
 
-function Header({ session }: { session: any }) {
-  getServerSideProps({ session });
+function Header() {
+  const { data: session } = useSession();
+
+  console.log(session);
 
   return (
     <div className="text-base-content bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md p-1 md:rounded-xl md:m-6 md:border sticky top-0 md:top-6 z-50">
@@ -69,29 +72,27 @@ function Header({ session }: { session: any }) {
               <UserGroupIcon className="navbtn" />
               <HeartIcon className="navbtn" />
 
-              <div className="avatar">
+              <div onClick={() => signOut()} className="avatar">
                 <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
-                  <img src="" alt="profile picture" />
+                  <img
+                    src={session.user?.image as string}
+                    alt="profile picture"
+                  />
                 </div>
               </div>
             </>
           ) : (
-            <SignIn />
+            <a
+              className="text-xl font-bold hover:scale-110 transition-all ease-out"
+              href="/auth/signin"
+            >
+              Sign In
+            </a>
           )}
         </div>
       </div>
     </div>
   );
-}
-
-export async function getServerSideProps(ctx: any) {
-  const session = await auth(ctx);
-
-  return {
-    props: {
-      session,
-    },
-  };
 }
 
 export default Header;

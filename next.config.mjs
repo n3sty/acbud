@@ -16,7 +16,15 @@ const nextConfig = {
             hostname: "img.daisyui.com",
             port: '',
             pathname: '/images/stock/*',
+        },{
+            protocol: 'https',
+            hostname: "lh3.googleusercontent.com",
+        },{
+            protocol: 'https',
+            hostname: 'avatars.githubusercontent.com',
         }
+
+        
     ],
 },
 };
