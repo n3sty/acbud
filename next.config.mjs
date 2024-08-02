@@ -22,6 +22,9 @@ const nextConfig = {
         },{
             protocol: 'https',
             hostname: 'avatars.githubusercontent.com',
+        },{
+            protocol: 'https',
+            hostname: 'firebasestorage.googleapis.com'
         }
 
         

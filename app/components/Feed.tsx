@@ -26,8 +26,7 @@ function Feed() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [new window.Event("resize")]);
+  }, []);
 
   return (
     <main
