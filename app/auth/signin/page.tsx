@@ -1,9 +1,9 @@
-import { SingIn } from '@/app/components/SignIn'
+import { SignIn } from '@/app/components/SignIn'
 import React from 'react'
 
 function page() {
   return (
-    <SingIn />
+    <SignIn />
   )
 }
 
