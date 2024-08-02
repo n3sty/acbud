@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
-
+import { useSession, signOut } from "next-auth/react";
+import { modalState } from "@/atoms/modalAtom";
 import Image from "next/image";
 import {
   MagnifyingGlassIcon,
@@ -13,17 +13,22 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/20/solid";
+import { useRouter } from "next/navigation";
+import { useRecoilState } from "recoil";
 
 function Header() {
   const { data: session } = useSession();
-
-  console.log(session);
+  const [open, setOpen] = useRecoilState(modalState);
+  const router = useRouter();
 
   return (
-    <div className="text-base-content bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md p-1 md:rounded-xl md:m-6 md:border sticky top-0 md:top-6 z-50">
+    <div className="text-base-content bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md p-1 sm:rounded-xl sm:m-6 sm:border sticky top-0 sm:top-6 z-50">
       <div className="flex justify-between items-center mx-5 lg:mx-auto max-w-6xl">
         {/* Left - Responsive Logo's*/}
-        <div className="relative hidden lg:inline-grid cursor-pointer">
+        <div
+          onClick={() => router.push("/")}
+          className="relative hidden lg:inline-grid cursor-pointer"
+        >
           <Image
             className="hover:scale-110 transform transition-all duration-200 ease-out"
             src="https://links.papareact.com/ocw"
@@ -32,7 +37,10 @@ function Header() {
             height={60}
           />
         </div>
-        <div className="relative lg:hidden flex-shrink-0 cursor-pointer">
+        <div
+          onClick={() => router.push("/")}
+          className="relative lg:hidden flex-shrink-0 cursor-pointer"
+        >
           <Image
             src="https://links.papareact.com/jjm"
             alt="instagram icon"
@@ -57,7 +65,7 @@ function Header() {
 
         {/* Right - Buttons and Avatar */}
         <div className="flex items-center justify-end space-x-4">
-          <HomeIcon className="navbtn" />
+          <HomeIcon onClick={() => router.push("/")} className="navbtn" />
           <Bars3Icon className="h-6 md:hidden cursor-pointer" />
 
           {session ? (
@@ -68,7 +76,10 @@ function Header() {
                   3
                 </span>
               </div>
-              <PlusCircleIcon className="navbtn" />
+              <PlusCircleIcon
+                onClick={() => setOpen(true)}
+                className="navbtn"
+              />
               <UserGroupIcon className="navbtn" />
               <HeartIcon className="navbtn" />
 
@@ -82,12 +93,12 @@ function Header() {
               </div>
             </>
           ) : (
-            <a
+            <p
               className="text-xl font-bold hover:scale-110 transition-all ease-out"
-              href="/auth/signin"
+              onClick={() => router.push("/auth/signin")}
             >
               Sign In
-            </a>
+            </p>
           )}
         </div>
       </div>
