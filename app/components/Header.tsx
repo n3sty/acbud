@@ -12,11 +12,12 @@ import { HomeIcon } from "@heroicons/react/20/solid";
 
 function Header() {
   return (
-    <div className="text-base-content bg-base-100 backdrop-blur-md shadow-md p-1 rounded-xl m-6 border sticky top-0 z-50">
+    <div className="text-base-content bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md p-1 md:rounded-xl md:m-6 md:border sticky top-0 md:top-6 z-50">
       <div className="flex justify-between items-center mx-5 lg:mx-auto max-w-6xl">
         {/* Left - Responsive Logo's*/}
         <div className="relative hidden lg:inline-grid cursor-pointer">
           <Image
+            className="hover:scale-110 transform transition-all duration-200 ease-out"
             src="https://links.papareact.com/ocw"
             alt="instagram logo"
             width={200}
@@ -41,7 +42,7 @@ function Header() {
             <input
               type="text"
               placeholder="Search"
-              className="input input-bordered text-gray-500 block w-full pl-10 sm:text-sm rounded-md p-2"
+              className="input input-bordered text-gray-500 backdrop-blur-md bg-opacity-10 block w-full pl-10 sm:text-sm rounded-md p-2"
             />
           </div>
         </div>

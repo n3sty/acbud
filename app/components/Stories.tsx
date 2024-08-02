@@ -3,14 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Story from "./Story";
-import Glide from "@glidejs/glide";
-
-type Suggestion = {
-  username: string;
-  avatar: string;
-  bio: string;
-  id: number;
-};
+import { Suggestion } from "./types";
 
 function Stories() {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);

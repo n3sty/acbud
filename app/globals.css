@@ -37,4 +37,8 @@ body {
     @apply hidden h-8 md:inline-flex cursor-pointer
     hover:scale-125 transition-all duration-150 ease-out
   }
+
+  .postbtn {
+    @apply h-6 md:h-8 hover:scale-125 cursor-pointer transition-all duration-150 ease-out
+  }
 }
