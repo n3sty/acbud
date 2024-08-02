@@ -10,8 +10,20 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { CameraIcon } from "@heroicons/react/24/solid";
+import { db, storage } from "@/firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { useSession } from "next-auth/react";
+import { ref, getDownloadURL, uploadString } from "firebase/storage";
 
 function Modal() {
+  const { data: session } = useSession();
+
   const [open, setOpen] = useRecoilState(modalState);
   const filePickerRef = React.useRef<HTMLInputElement>(null);
   const captionRef = React.useRef<HTMLInputElement>(null);
@@ -20,15 +32,43 @@ function Modal() {
   >(null);
   const [loading, setLoading] = React.useState(false);
 
-
   const uploadPost = async () => {
     if (loading) return;
 
     setLoading(true);
 
-    
-  };
+    // 1) Create a post and add to firestore 'posts' collection
+    const docRef = await addDoc(collection(db, 'posts'), {
+      // @ts-expect-error
+      username: session?.user?.username,
+      caption: captionRef.current?.value,
+      profileImg: session?.user?.image,
+      timestamp: serverTimestamp(),
+    });
 
+    // 2) Get the post ID for the newly created post
+    console.log("New doc added with ID", docRef.id);
+
+    // 3) Upload the image to firebase storage with the post ID
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    // 4) Get the image URL from firebase storage and update the original post with image
+    if (selectedFile) {
+      await uploadString(imageRef, selectedFile as string, "data_url").then(
+        async (snapshot) => {
+          const downloadURL = await getDownloadURL(imageRef);
+          await updateDoc(doc(db, "posts", docRef.id), {
+            image: downloadURL,
+          });
+        }
+      );
+    }
+
+    // Reset the modal and states
+    setOpen(false);
+    setLoading(false);
+    setSelectedFile(null);
+  };
 
   const addImageToPost = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
@@ -103,11 +143,13 @@ function Modal() {
               <div className="mt-4">
                 <button
                   type="button"
+                  disabled={!selectedFile}
                   className="inline-flex justify-center w-full rounded-md border border-transparent px-4 bg-primary py-2 text-sm 
                 font-medium text-primary-content hover:bg-primary/80 hover:text-white transition-all focus:outline-none sm:text-base data-[hover]:bg-gray-600 
                 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700 disabled:text-base-content/50 disabled:bg-gray-300 disabled:cursor-not-allowed hover:disabled:bg-gray-300"
+                  onClick={() => uploadPost()}
                 >
-                  Upload Post
+                  {loading ? "Uploading..." : "Upload Post"}
                 </button>
               </div>
             </div>
