@@ -21,7 +21,7 @@ const config: Config = {
   plugins: [
     require("daisyui"),
     require("@tailwindcss/forms"),
-    require("tailwind-scrollbar"),
+    require("tailwind-scrollbar")({ nocompatible: true, prefferedStrategy: 'standard'}),
     require("tailwind-scrollbar-hide"),
   ],
   daisyui: {
