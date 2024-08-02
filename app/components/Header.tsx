@@ -22,7 +22,7 @@ function Header() {
   const router = useRouter();
 
   return (
-    <div className="text-base-content bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md p-1 sm:rounded-xl sm:m-6 sm:border sticky top-0 sm:top-6 z-50">
+    <div className="text-base-content bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md p-1 sm:rounded-xl sm:m-6 sm:border sticky top-0 sm:top-6 z-10">
       <div className="flex justify-between items-center mx-5 lg:mx-auto max-w-6xl">
         {/* Left - Responsive Logo's*/}
         <div

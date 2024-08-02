@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@glidejs/glide": "^3.6.2",
-    "@headlessui/react": "^2.1.1",
+    "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@saas-ui/auth": "^3.1.9",
     "@saas-ui/supabase": "^2.1.5",
