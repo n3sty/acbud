@@ -20,10 +20,12 @@ const handler = NextAuth({
   callbacks: {
     async session({ session, token, user }) {
       if (session.user) {
+        // @ts-expect-error
         session.user.username = session.user.name
           .split(" ")
           .join("")
           .toLocaleLowerCase();
+        // @ts-expect-error
         session.user.uid = token.sub;
       }
       return session;
