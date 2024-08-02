@@ -1,13 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import React from "react";
+import { signOut, useSession } from "next-auth/react";
 
 function MiniProfile() {
+  const { data: session } = useSession();
+
+  console.log(session);
+
   return (
     <div className="flex items-center justify-between mt-14 ml-10">
-      <img
-        className="w-16 h-16 rounded-full border p-[2px]"
+      <Image
+        className="rounded-full border p-[2px]"
         src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
         alt=""
+        width={60}
+        height={60}
       />
 
       <div className="flex-1 mx-4">
