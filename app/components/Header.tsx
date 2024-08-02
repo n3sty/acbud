@@ -9,8 +9,13 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/20/solid";
+import { SignIn } from "./SignIn";
+// import { SignOut } from "./SignOut";
+import { auth, signOut } from "@/auth";
 
-function Header() {
+function Header({ session }: { session: any }) {
+  getServerSideProps({ session });
+
   return (
     <div className="text-base-content bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md p-1 md:rounded-xl md:m-6 md:border sticky top-0 md:top-6 z-50">
       <div className="flex justify-between items-center mx-5 lg:mx-auto max-w-6xl">
@@ -52,28 +57,41 @@ function Header() {
           <HomeIcon className="navbtn" />
           <Bars3Icon className="h-6 md:hidden cursor-pointer" />
 
-          <div className="relative navbtn">
-            <PaperAirplaneIcon />
-            <span className="badge text-white bg-red-500 badge-md absolute -right-1 text-xs animate-pulse">
-              3
-            </span>
-          </div>
-          <PlusCircleIcon className="navbtn" />
-          <UserGroupIcon className="navbtn" />
-          <HeartIcon className="navbtn" />
+          {session ? (
+            <>
+              <div className="relative navbtn">
+                <PaperAirplaneIcon />
+                <span className="badge text-white bg-red-500 badge-md absolute -right-1 text-xs animate-pulse">
+                  3
+                </span>
+              </div>
+              <PlusCircleIcon className="navbtn" />
+              <UserGroupIcon className="navbtn" />
+              <HeartIcon className="navbtn" />
 
-          <div className="avatar">
-            <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                alt="profile picture"
-              />
-            </div>
-          </div>
+              <div className="avatar">
+                <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
+                  <img src="" alt="profile picture" />
+                </div>
+              </div>
+            </>
+          ) : (
+            <SignIn />
+          )}
         </div>
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(ctx: any) {
+  const session = await auth(ctx);
+
+  return {
+    props: {
+      session,
+    },
+  };
 }
 
 export default Header;

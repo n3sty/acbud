@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import "@/node_modules/@glidejs/glide/dist/css/glide.core.min.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
