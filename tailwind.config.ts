@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      'display': ["Rubik", "sans-serif"],
+      display: ["Rubik", "sans-serif"],
     },
     extend: {
       backgroundImage: {
@@ -19,7 +19,10 @@ const config: Config = {
     },
   },
   plugins: [
-    require('daisyui')
+    require("daisyui"),
+    require("@tailwindcss/forms"),
+    require("tailwind-scrollbar"),
+    require("tailwind-scrollbar-hide"),
   ],
   daisyui: {
     styled: true,
@@ -30,6 +33,6 @@ const config: Config = {
     rtl: false,
   },
 
-  darkMode: 'selector'
+  darkMode: "selector",
 };
 export default config;

@@ -8,10 +8,15 @@ const nextConfig = {
     remotePatterns: [
         {
             protocol: 'https',
-            hostname: 'links.papareact.com',
+            hostname: "links.papareact.com",
             port: '',
-            pathname: '/ocw',
-        },
+            pathname: '/*',
+        },{
+            protocol: 'https',
+            hostname: "img.daisyui.com",
+            port: '',
+            pathname: '/images/stock/*',
+        }
     ],
 },
 };
