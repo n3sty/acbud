@@ -4,6 +4,7 @@ import "./globals.css";
 import SessionWrapper from "./components/auth/SessionWrapper";
 import RecoilContextProvider from "./components/db/RecoilContextProvider";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,8 @@ export default function RootLayout({
             content="initial-scale=1 user-scalable=no viewport-fit=cover height=device-height width=device-width"
           ></meta>
           <body className={`${inter.className}`}>
-            {children} 
+            {children}
+            <SpeedInsights />
             <Analytics />
           </body>
         </html>
