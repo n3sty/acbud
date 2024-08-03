@@ -29,7 +29,31 @@ const handler = NextAuth({
       }
       return session;
     },
+
+    async redirect({ url, baseUrl }) {
+      const userExists = await checkIfUserExists();
+
+      console.log("Base URL: ", baseUrl)
+      console.log("url: ", url)
+
+      if (userExists) {
+        // Redirect to existing user page
+        if (url.startsWith("/")) return `${baseUrl}${url}`
+        else if (new URL(url).origin === baseUrl) return url
+        return baseUrl
+      } else {
+      // Redirect to new user page
+      return `${baseUrl}/new-user`;
+      }
+    },
   },
 });
 
 export { handler as GET, handler as POST };
+
+
+function checkIfUserExists() {
+  // throw new Error("Function not implemented.");
+  return true
+}
+

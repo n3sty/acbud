@@ -51,11 +51,6 @@ function Post({
   >([]);
   const [hasLiked, setHasLiked] = useState(false);
 
-
-  console.log(session?.user.uid)
-
-
-
   useEffect(
     () =>
       onSnapshot(
@@ -78,37 +73,18 @@ function Post({
 
   useEffect(() => {
     const hasLiked =
-      likes.findIndex(
-        (like) =>
-          like.id ===
-          session?.user?.uid
-      ) !== -1;
+      likes.findIndex((like) => like.id === session?.user?.uid) !== -1;
     setHasLiked(hasLiked);
-  }, [
-    likes,
-    session?.user?.uid,
-  ]);
+  }, [likes, session?.user?.uid]);
 
   const likePost = async () => {
     if (hasLiked) {
       await deleteDoc(
-        doc(
-          db,
-          "posts",
-          id,
-          "likes", 
-          session?.user?.uid as string
-        )
+        doc(db, "posts", id, "likes", session?.user?.uid as string)
       );
     } else {
       await setDoc(
-        doc(
-          db,
-          "posts",
-          id,
-          "likes",
-          session?.user?.uid as string
-        ),
+        doc(db, "posts", id, "likes", session?.user?.uid as string),
         {
           username: session?.user?.username,
         }
@@ -157,9 +133,11 @@ function Post({
       {session && (
         <div className="flex items-center justify-between pt-4 px-4">
           <div className="flex space-x-4">
-
             {hasLiked ? (
-              <HeartIconFilled onClick={likePost} className="postbtn text-red-500" />
+              <HeartIconFilled
+                onClick={likePost}
+                className="postbtn text-red-500"
+              />
             ) : (
               <HeartIcon onClick={likePost} className="postbtn" />
             )}
@@ -174,7 +152,7 @@ function Post({
       {/* Caption */}
       <p className="p-5 truncate">
         {likes.length > 0 && (
-          <p className="font-bold mb-1">{likes.length} likes</p>
+          <span className="font-bold mb-1">{likes.length} likes</span>
         )}
         <span className="font-bold mr-1">{username}</span>
         {caption}

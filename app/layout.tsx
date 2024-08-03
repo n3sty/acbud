@@ -11,6 +11,23 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "ACBUD - Feedback on your journeys",
   description: "ACBUD is a platform for sharing feedback on your journeys.",
+  authors: [{ name: "Job Siemerink", url: "https://jobsie.me" }],
+  openGraph: {
+    type: "website",
+    url: "https://acbud.jobsie.me/",
+    title: "ACBUD - Feedback on your journeys",
+    description: "ACBUD is a platform for sharing feedback on your journeys.",
+    images: [
+      {
+        url: "https://links.papareact.com/ocw",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    site: "https://acbud.jobsie.me/",
+    creator: "@jobsie",
+  },
 };
 
 export default function RootLayout({
