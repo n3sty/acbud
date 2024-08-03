@@ -8,7 +8,8 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      display: ["Rubik", "sans-serif"],
+      sans: ["Noto_Sans", "sans-serif"],
+      serif: ["Playfair_Display", "serif"],
     },
     extend: {
       backgroundImage: {
@@ -21,7 +22,10 @@ const config: Config = {
   plugins: [
     require("daisyui"),
     require("@tailwindcss/forms"),
-    require("tailwind-scrollbar")({ nocompatible: true, prefferedStrategy: 'standard'}),
+    require("tailwind-scrollbar")({
+      nocompatible: true,
+      prefferedStrategy: "standard",
+    }),
     require("tailwind-scrollbar-hide"),
   ],
   daisyui: {

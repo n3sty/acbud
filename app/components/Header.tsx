@@ -1,9 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
 import { modalState } from "@/atoms/modalAtom";
 import Image from "next/image";
+import LogoText from '@/public/logo-text.svg'
+import LogoIcon from '@/public/logo-icon.svg'
 import {
   MagnifyingGlassIcon,
   PlusCircleIcon,
@@ -25,28 +26,28 @@ function Header() {
         !session && "!grid-cols-1 !max-w-3xl"
       }`}
     >
-      <div className="text-base-content col-span-3 bg-base-100 bg-opacity-40 backdrop-blur-md shadow-md py-1 px-3 -mx-4 sm:rounded-xl sm:mt-4 sm:border sm:top-6">
-        <div className="flex justify-between items-center mx-5 xl:mx-auto py-2 lg:py-0 max-w-6xl">
+      <div className="text-base-content col-span-3 bg-white bg-opacity-50 backdrop-blur-md shadow-md py-1 px-3 -mx-4 sm:rounded-xl sm:mt-4 sm:border sm:top-6">
+        <div className="flex justify-between items-center mx-4 py-2 lg:py-0 max-w-6xl">
           {/* Left - Responsive Logo's*/}
           <div
             onClick={() => router.push("/")}
             className="relative hidden lg:inline-grid cursor-pointer"
           >
             <Image
-              className="hover:scale-110 transform transition-all duration-200 ease-out"
-              src="https://links.papareact.com/ocw"
-              alt="instagram logo"
+              className="hover:scale-105 p-2 transform transition-all duration-200 ease-out"
+              src={LogoText}
+              alt="AC/BUD logo"
               width={200}
               height={60}
             />
           </div>
           <div
             onClick={() => router.push("/")}
-            className="relative lg:hidden flex-shrink-0 cursor-pointer"
+            className="relative hover:scale-110 transition-all duration-200 lg:hidden flex-shrink-0 cursor-pointer"
           >
             <Image
-              src="https://links.papareact.com/jjm"
-              alt="instagram icon"
+              src={LogoIcon}
+              alt="AC/BUD icon"
               width={50}
               height={50}
             />
@@ -137,7 +138,7 @@ function Header() {
               </>
             ) : (
               <p
-                className="text-md lg:text-xl font-bold hover:scale-110 transition-all ease-out"
+                className="text-md p-2 font-serif lg:text-2xl text-xl font-bold hover:cursor-pointer hover:scale-105 transition-all ease-out"
                 onClick={() => router.push("/auth/signin")}
               >
                 Sign In

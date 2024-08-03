@@ -23,24 +23,24 @@ function Stories() {
   }, []);
 
   return (
-    <div className="flex space-x-2 p-4 bg-white mt-6 border border-gray-300 rounded-md overflow-x-scroll scrollbar-hide">
-      {session && (
-        <Story
-          img={session?.user?.image as string}
-          username={
-            session?.user?.username as string
-          }
-        />
-      )}
+    <>
+      <div className="flex border-gray-300 border-[2px] space-x-2 p-4 bg-white mt-6 rounded-xl overflow-x-scroll scrollbar-hide">
+        {session && (
+          <Story
+            img={session?.user?.image as string}
+            username={session?.user?.username as string}
+          />
+        )}
 
-      {suggestions.map((profile) => (
-        <Story
-          key={profile.id}
-          img={profile.avatar}
-          username={profile.username}
-        />
-      ))}
-    </div>
+        {suggestions.map((profile) => (
+          <Story
+            key={profile.id}
+            img={profile.avatar}
+            username={profile.username}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 

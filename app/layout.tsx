@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Noto_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "./components/auth/SessionWrapper";
 import RecoilContextProvider from "./components/db/RecoilContextProvider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const inter = Inter({ subsets: ["latin"] });
+const noto_sans = Noto_Sans({ subsets: ["latin"] });
+const playfair_display = Playfair_Display({ subsets: ["latin"]});
 
 export const metadata: Metadata = {
   title: "ACBUD - Feedback on your journeys",
@@ -44,7 +45,7 @@ export default function RootLayout({
             name="viewport"
             content="initial-scale=1 user-scalable=no viewport-fit=cover height=device-height width=device-width"
           ></meta>
-          <body className={`${inter.className}`}>
+          <body className={`${noto_sans.className} subpixel-antialiased`}>
             {children}
             <SpeedInsights />
             <Analytics />
