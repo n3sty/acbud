@@ -16,12 +16,15 @@ import { useSession } from "next-auth/react";
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   DocumentData,
   onSnapshot,
   orderBy,
   query,
   QueryDocumentSnapshot,
   serverTimestamp,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase";
 
@@ -43,16 +46,74 @@ function Post({
   const [comments, setComments] = useState<
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
   >([]);
+  const [likes, setLikes] = useState<
+    QueryDocumentSnapshot<DocumentData, DocumentData>[]
+  >([]);
+  const [hasLiked, setHasLiked] = useState(false);
 
-  useEffect(() =>
-    onSnapshot(
-      query(
-        collection(db, "posts", id, "comments"),
-        orderBy("timestamp", "desc")
+  useEffect(
+    () =>
+      onSnapshot(
+        query(
+          collection(db, "posts", id, "comments"),
+          orderBy("timestamp", "desc")
+        ),
+        (snapshot) => setComments(snapshot.docs)
       ),
-      (snapshot) => setComments(snapshot.docs)
-    )
+    [id]
   );
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [id]
+  );
+
+  useEffect(() => {
+    const hasLiked =
+      likes.findIndex(
+        (like) =>
+          like.id ===
+          // @ts-expect-error
+          session?.user?.uid
+      ) !== -1;
+    setHasLiked(hasLiked);
+  }, [
+    likes,
+    // @ts-expect-error
+    session?.user?.uid,
+  ]);
+
+  const likePost = async () => {
+    if (hasLiked) {
+      await deleteDoc(
+        doc(
+          db,
+          "posts",
+          id,
+          "likes", // @ts-expect-error
+          session?.user?.uid
+        )
+      );
+    } else {
+      await setDoc(
+        doc(
+          db,
+          "posts",
+          id,
+          "likes",
+          // @ts-expect-error
+          session?.user?.uid
+        ),
+        {
+          // @ts-expect-error
+          username: session?.user?.username,
+        }
+      );
+    }
+  };
 
   const sendComment = async (e: { preventDefault: () => void } | undefined) => {
     e?.preventDefault();
@@ -96,7 +157,13 @@ function Post({
       {session && (
         <div className="flex items-center justify-between pt-4 px-4">
           <div className="flex space-x-4">
-            <HeartIcon className="postbtn" />
+
+            {hasLiked ? (
+              <HeartIconFilled onClick={likePost} className="postbtn text-red-500" />
+            ) : (
+              <HeartIcon onClick={likePost} className="postbtn" />
+            )}
+
             <ChatBubbleOvalLeftIcon className="postbtn" />
             <PaperAirplaneIcon className="postbtn" />
           </div>
@@ -106,6 +173,9 @@ function Post({
 
       {/* Caption */}
       <p className="p-5 truncate">
+        {likes.length > 0 && (
+          <p className="font-bold mb-1">{likes.length} likes</p>
+        )}
         <span className="font-bold mr-1">{username}</span>
         {caption}
       </p>
@@ -125,7 +195,7 @@ function Post({
                 {comment.data().comment}
               </p>
 
-              <Moment className="pr-5 text-xs"  fromNow>
+              <Moment className="pr-5 text-xs" fromNow>
                 {comment.data().timestamp?.toDate()}
               </Moment>
             </div>
