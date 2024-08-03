@@ -50,6 +50,6 @@ body {
   }
 
   .postbtn {
-    @apply h-6 md:h-8 hover:scale-125 cursor-pointer transition-all duration-150 ease-out
+    @apply h-7 hover:scale-125 cursor-pointer transition-all duration-150 ease-out
   }
 }
