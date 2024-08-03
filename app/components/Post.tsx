@@ -109,6 +109,7 @@ function Post({
   return (
     <div className="bg-white my-6 border rounded-md">
       {/* Header */}
+
       <div className="flex items-center p-5 gap-2">
         <div className="avatar">
           <div className="rounded-full">
@@ -120,8 +121,9 @@ function Post({
       </div>
 
       {/* Image */}
+
       <Image
-        className="object-cover w-full"
+        className="object-cover w-full select-none drag-none"
         src={img}
         alt=""
         height={640}
@@ -150,15 +152,21 @@ function Post({
       )}
 
       {/* Caption */}
+
       <p className="p-5 truncate">
         {likes.length > 0 && (
-          <span className="font-bold mb-1">{likes.length} likes</span>
+          <>
+            <span className="font-bold mb-1">{likes.length} likes </span>
+            <br />
+          </>
         )}
+
         <span className="font-bold mr-1">{username}</span>
         {caption}
       </p>
 
       {/* Comments */}
+
       {comments.length > 0 && session && (
         <div className="ml-10 h-20 overflow-y-scroll scrollbar-hide">
           {comments.map((comment) => (
@@ -182,6 +190,7 @@ function Post({
       )}
 
       {/* Input Box */}
+
       {session && (
         <form className="flex items-center p-4">
           <FaceSmileIcon className="h-7" />

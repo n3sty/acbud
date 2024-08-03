@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Job Siemerink", url: "https://jobsie.me" }],
   openGraph: {
     type: "website",
+    siteName: "ACBUD", 
     url: "https://acbud.jobsie.me/",
     title: "ACBUD - Feedback on your journeys",
     description: "ACBUD is a platform for sharing feedback on your journeys.",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     site: "https://acbud.jobsie.me/",
     creator: "@jobsie",
   },

@@ -65,9 +65,6 @@ function Header() {
 
         {/* Right - Buttons and Avatar */}
         <div className="flex items-center justify-end space-x-4">
-          <HomeIcon onClick={() => router.push("/")} className="navbtn" />
-          <Bars3Icon className="h-6 md:hidden cursor-pointer" />
-
           {session ? (
             <>
               <div className="relative navbtn">
@@ -91,10 +88,53 @@ function Header() {
                   />
                 </div>
               </div>
+              <div className="dropdown md:hidden">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost w-12 rounded-lg p-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 6h16M4 12h16M4 18h7"
+                    />
+                  </svg>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm -mr-2 dropdown-content bg-base-100 rounded-lg p-1 z-[1] mt-2 shadow"
+                >
+                  <li className="rounded-sm">
+                    <PaperAirplaneIcon className="dropdownbtn" />
+                  </li>
+                  <li>
+                    <PlusCircleIcon
+                      onClick={() => setOpen(true)}
+                      className="dropdownbtn"
+                    />
+                  </li>
+                  <li>
+                    <UserGroupIcon className="dropdownbtn" />
+                  </li>
+                  <li>
+                    <HeartIcon className="dropdownbtn" />
+                  </li>
+                </ul>
+              </div>
+              {/* <HomeIcon onClick={() => router.push("/")} className="navbtn" /> */}
             </>
           ) : (
             <p
-              className="text-xl font-bold hover:scale-110 transition-all ease-out"
+              className="text-md lg:text-xl font-bold hover:scale-110 transition-all ease-out"
               onClick={() => router.push("/auth/signin")}
             >
               Sign In

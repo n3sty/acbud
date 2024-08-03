@@ -9,7 +9,7 @@ function SignIn() {
     <div className="bg-base-200 text-base-content">
       <Header />
 
-      <div className="flex flex-col items-center justify-center min-h-screen -mt-56 px-14 text-center py-2">
+      <div className="flex flex-col items-center justify-center -mt-[10rem] min-h-screen px-14 text-center py-2">
         <Image width={300} height={200} src="https://links.papareact.com/ocw" alt="" />
         <div className="flex flex-col w-full max-w-xs mt-40">
           <button

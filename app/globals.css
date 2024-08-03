@@ -30,12 +30,23 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .drag-none {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+  }
 }
 
 @layer components {
   .navbtn {
     @apply hidden h-8 md:inline-flex cursor-pointer
     hover:scale-125 transition-all duration-150 ease-out
+  }
+
+  .dropdownbtn {
+    @apply w-10 h-10 p-1 cursor-pointer
   }
 
   .postbtn {
