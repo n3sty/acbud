@@ -19,8 +19,7 @@ function MiniProfile() {
       <div className="flex-1 mx-4">
         <h2 className="font-bold">
           {
-            // @ts-expect-error
-            session?.user?.username
+            session?.user?.username as string
           }
         </h2>
         <h3 className="text-sm text-gray-400">Welcome to ACBUDS</h3>

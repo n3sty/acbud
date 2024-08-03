@@ -39,7 +39,6 @@ function Modal() {
 
     // 1) Create a post and add to firestore 'posts' collection
     const docRef = await addDoc(collection(db, 'posts'), {
-      // @ts-expect-error
       username: session?.user?.username,
       caption: captionRef.current?.value,
       profileImg: session?.user?.image,

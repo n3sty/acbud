@@ -19,14 +19,13 @@ const handler = NextAuth({
   },
   callbacks: {
     async session({ session, token, user }) {
-      if (session.user) {
-        // @ts-expect-error
+      if (session.user && session.user.name) {
         session.user.username = session.user.name
           .split(" ")
           .join("")
           .toLocaleLowerCase();
-        // @ts-expect-error
-        session.user.uid = token.sub;
+
+        session.user.uid = token.sub as string;
       }
       return session;
     },

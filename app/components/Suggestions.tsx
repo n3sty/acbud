@@ -2,8 +2,8 @@
 "use client";
 import { faker } from "@faker-js/faker";
 import React, { useEffect } from "react";
-import { Suggestion } from "./types";
 import SuggestionCard from "./SuggestionCard";
+import { Suggestion } from "@/types/types";
 
 function Suggestions() {
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);

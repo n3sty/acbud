@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Story from "./Story";
-import { Suggestion } from "./types";
+import { Suggestion } from "../../types/types";
 import { useSession } from "next-auth/react";
 
 function Stories() {
@@ -28,8 +28,7 @@ function Stories() {
         <Story
           img={session?.user?.image as string}
           username={
-            // @ts-expect-error
-            session?.user?.username
+            session?.user?.username as string
           }
         />
       )}

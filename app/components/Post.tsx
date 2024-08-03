@@ -51,6 +51,11 @@ function Post({
   >([]);
   const [hasLiked, setHasLiked] = useState(false);
 
+
+  console.log(session?.user.uid)
+
+
+
   useEffect(
     () =>
       onSnapshot(
@@ -76,13 +81,11 @@ function Post({
       likes.findIndex(
         (like) =>
           like.id ===
-          // @ts-expect-error
           session?.user?.uid
       ) !== -1;
     setHasLiked(hasLiked);
   }, [
     likes,
-    // @ts-expect-error
     session?.user?.uid,
   ]);
 
@@ -93,8 +96,8 @@ function Post({
           db,
           "posts",
           id,
-          "likes", // @ts-expect-error
-          session?.user?.uid
+          "likes", 
+          session?.user?.uid as string
         )
       );
     } else {
@@ -104,11 +107,9 @@ function Post({
           "posts",
           id,
           "likes",
-          // @ts-expect-error
-          session?.user?.uid
+          session?.user?.uid as string
         ),
         {
-          // @ts-expect-error
           username: session?.user?.username,
         }
       );
@@ -123,7 +124,6 @@ function Post({
 
     await addDoc(collection(db, "posts", id, "comments"), {
       comment: commentToSend,
-      // @ts-expect-error
       username: session?.user?.username,
       userImage: session?.user?.image,
       timestamp: serverTimestamp(),
