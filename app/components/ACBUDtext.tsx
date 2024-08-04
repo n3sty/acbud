@@ -13,10 +13,10 @@ import React from "react";
 export default function ACBudText({ size }: { size?: string | "" }) {
   return (
     <>
-      <span className={`!${size} text-[#282828] font-serif font-bold text-xl tracking-[-0.3rem]`}>AC</span>
+      <span className={`${size} text-[#282828] font-serif font-bold text-xl tracking-[-0.3rem]`}>AC</span>
       {" "}
-      <span className={`!${size} text-[#4A00FF] font-serif font-black text-xl tracking-[0.1rem]`}>/</span>
-      <span className={`!${size} text-[#1F2937] font-serif font-bold text-xl`}>BUD</span>
+      <span className={`${size} text-[#4A00FF] font-serif font-black text-xl tracking-[0.1rem]`}>/</span>
+      <span className={`${size} text-[#1F2937] font-serif font-bold text-xl`}>BUD</span>
     </>
   );
 };

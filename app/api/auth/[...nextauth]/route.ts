@@ -22,11 +22,9 @@ const handler = NextAuth({
   },
 
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       const userRef = doc(db, "users", user.id as string);
       const docSnap = await getDoc(userRef);
-
-      console.log("user", user);
 
       if (!docSnap.exists()) {
         // Create user in database
@@ -38,11 +36,8 @@ const handler = NextAuth({
           provider: account?.provider,
           createdAt: new Date(),
         });
-
-        return true;
-      } else {
-        return true;
-      }
+      };
+      return true;
     },
 
     async redirect({ url, baseUrl }) {

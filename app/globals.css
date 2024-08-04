@@ -40,6 +40,11 @@ body {
 }
 
 @layer components {
+  .profilebtn {
+    @apply btn btn-ghost btn-sm h-[2.5rem] border-[2px] border-gray-300 
+    hover:scale-105 hover:border-gray-300 hover:bg-base-200 transition-all duration-150 ease-out
+  }
+
   .navbtn {
     @apply hidden h-8 md:inline-flex cursor-pointer
     hover:scale-125 transition-all duration-150 ease-out

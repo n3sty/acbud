@@ -6,6 +6,7 @@ import Posts from "./Posts";
 import Stories from "./Stories";
 import Suggestions from "./Suggestions";
 import { useSession } from "next-auth/react";
+import ProfileWarning from "./ProfileWarning";
 
 function Feed() {
   const { data: session } = useSession();
@@ -19,6 +20,7 @@ function Feed() {
       }`}
     >
       <section className="col-span-2">
+        {session && !session.user.username && <ProfileWarning />}
         <Stories />
         <Posts />
       </section>
