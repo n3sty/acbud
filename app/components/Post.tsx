@@ -73,18 +73,18 @@ function Post({
 
   useEffect(() => {
     const hasLiked =
-      likes.findIndex((like) => like.id === session?.user?.uid) !== -1;
+      likes.findIndex((like) => like.id === session?.user?.id) !== -1;
     setHasLiked(hasLiked);
-  }, [likes, session?.user?.uid]);
+  }, [likes, session?.user?.id]);
 
   const likePost = async () => {
     if (hasLiked) {
       await deleteDoc(
-        doc(db, "posts", id, "likes", session?.user?.uid as string)
+        doc(db, "posts", id, "likes", session?.user?.id as string)
       );
     } else {
       await setDoc(
-        doc(db, "posts", id, "likes", session?.user?.uid as string),
+        doc(db, "posts", id, "likes", session?.user?.id as string),
         {
           username: session?.user?.username,
         }

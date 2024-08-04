@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: "ACBUD is a platform for sharing feedback on your journeys.",
     images: [
       {
-        url: "https://links.papareact.com/ocw",
+        url: "https://acbud.jobsie.me/logo-text.svg",
       },
     ],
   },

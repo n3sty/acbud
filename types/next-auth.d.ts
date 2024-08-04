@@ -4,8 +4,10 @@ import NextAuth from "next-auth/next";
 declare module "next-auth" {
     interface Session {
         user: {
-            uid: string | null,
+            id: string | null,
+            email: string | null,
             username?: string | null,
+            userProvider?: string | null,
         } & DefaultSession["user"]
     }
 }
