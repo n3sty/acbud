@@ -1,8 +1,13 @@
 "use client";
 import { infoModalState } from "@/atoms/infoModalAtom";
 import { db, storage } from "@/firebase";
-import { doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
 import { useSession } from "next-auth/react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
@@ -58,7 +63,7 @@ function NewUser() {
   const filePickerRef = React.useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = React.useState<
     string | ArrayBuffer | null
-  >(null); 
+  >(null);
 
   const addImageToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -87,7 +92,7 @@ function NewUser() {
     // Update the user data in the database
     await updateDoc(doc(db, "users", session?.user.id as string), {
       ...filteredDataToChange,
-    })
+    });
 
     // Update the session data
     const entries = Object.entries(filteredDataToChange);
@@ -117,25 +122,66 @@ function NewUser() {
 
       // Update the session data
       await update({ image: selectedFile });
+
+      // Redirect to the homepage with a success message
+      setOpen(true);
+      router.push("/?success=true&message=Your profile has been updated!");
     }
 
     // Reset the loading state and selected file
     setLoading(false);
     setSelectedFile(null);
 
+    router.push("/");
+  };
+
+  const deleteUserData = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (loading) return;
+
+    setLoading(true);
+
+    // Delete the user image from firebase storage if it exists
+    if (session?.user?.image) {
+      const imageRef = ref(storage, `users/${session?.user.id}/image`);
+
+      console.log(imageRef);
+
+      await uploadString(imageRef, selectedFile as string, "data_url").then(
+        async (snapshot) => {
+          await deleteObject(imageRef)
+            .then(() => {
+              console.log("Image deleted successfully!");
+            })
+            .catch((error) => {
+              console.error("Error removing image: ", error);
+            });
+        }
+      );
+    }
+
+    // Delete the user data from the database
+    await deleteDoc(doc(db, "users", session?.user.id as string));
+
     // Redirect to the homepage with a success message
     setOpen(true);
-    router.push("/?success=true&message=Your profile has been updated!");
+    router.push("/?success=true&message=Your profile has been deleted!");
+
+    // Reset the loading state and selected file
+    setLoading(false);
+    setSelectedFile(null);
   };
 
   return (
     <div className="bg-slate-400 text-base-content">
-      <div className="flex mx-auto items-center min-h-screen justify-center md:max-w-6xl max-w-3xl">
+      <div className="flex mx-auto items-center min-h-screen justify-center max-w-3xl sm:max-w-xl">
         <div className="card static shadow-lg border-4 border-white bg-base-200">
-          <div className="card-body pt-12 pb-8 px-8 w-[40rem] relative z-10">
+          <div className="card-body pt-12 pb-8 px-8 md:w-[40rem] w-[30rem] relative z-10">
             {/* Top with banner, image and links */}
 
-            <div className="bg-base-300 absolute w-full left-0 top-0 h-[25%] max-h-[6rem] rounded-t-xl -z-10"></div>
+            <div className="bg-base-300 absolute w-full left-0 top-0 h-[25%] max-h-[6rem] rounded-t-xl -z-10 hidden md:inline-flex"></div>
             <div className="flex justify-between">
               <Image
                 className="rounded-full shadow-lg shadow-black/15 z-10 border-4 p-[1.5px] border-base-200"
@@ -144,7 +190,7 @@ function NewUser() {
                 height={120}
                 alt=""
               />
-              <div className="grid grid-flow-col mt-[4rem] space-x-2">
+              <div className="grid grid-flow-col md:mt-[4rem] space-x-2">
                 <button className="profilebtn">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -163,10 +209,10 @@ function NewUser() {
 
             {/* Name and email */}
 
-            <h2 className="card-title text-2xl font-bold">
+            <h2 className="absolute top-28 right-8 md:static card-title text-2xl font-bold">
               {session?.user?.name}
             </h2>
-            <p className="text-gray-500 -mt-1 mb-4">{session?.user?.email}</p>
+            <p className="absolute top-36 right-8 md:static text-gray-500 -mt-1 mb-4">{session?.user?.email}</p>
 
             {/* Input Fields */}
 
@@ -180,7 +226,6 @@ function NewUser() {
                 placeholder={session?.user?.name as string}
                 span={4}
               />
-              
 
               {/* Email address */}
               <HorizontalLine />
@@ -243,7 +288,10 @@ function NewUser() {
               </div>
 
               <div className="card-actions col-span-5 grid grid-cols-2 mt-4">
-                <button className="profilebtn bg-error/10 border-0 hover:bg-error hover:text-error-content text-error w-fit">
+                <button
+                  onClick={(e) => deleteUserData(e)}
+                  className="profilebtn bg-error/10 border-0 hover:bg-error hover:text-error-content text-error w-fit"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -276,8 +324,6 @@ function NewUser() {
                 </div>
               </div>
             </form>
-
-            {/* Bottom with Delete user, cancel and save changes buttons */}
           </div>
         </div>
       </div>
