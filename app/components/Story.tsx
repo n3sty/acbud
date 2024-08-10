@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import Image from "next/image";
+import React, { Suspense } from "react";
 
 function Story({ img, name }: { img: string; name: string }) {
   return (
