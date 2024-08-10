@@ -84,7 +84,7 @@ function Header() {
                 <UserGroupIcon className="navbtn" />
                 <HeartIcon className="navbtn" />
 
-                <div onClick={() => signOut()} className="avatar">
+                <div onClick={() => router.push("/auth/onboarding")} className="avatar">
                   <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
                     {
                       // eslint-disable-next-line @next/next/no-img-element

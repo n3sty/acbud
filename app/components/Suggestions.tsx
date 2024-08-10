@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 import React, { useEffect } from "react";
 import SuggestionCard from "./SuggestionCard";
 import { Suggestion } from "@/types/types";
@@ -8,16 +8,25 @@ import { Suggestion } from "@/types/types";
 function Suggestions() {
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
 
-  useEffect(() => {
-    const suggestions = [...Array(5)].map((_, i) => ({
-      username: faker.internet.userName(),
-      avatar: faker.image.avatarLegacy(),
-      bio: faker.lorem.sentence(),
-      id: i,
-    }));
 
-    setSuggestions(suggestions);
-  }, []);
+  // REAL DATA
+  
+
+
+
+
+  // FAKE DATA
+
+  // useEffect(() => {
+  //   const suggestions = [...Array(5)].map((_, i) => ({
+  //     username: faker.internet.userName(),
+  //     avatar: faker.image.avatarLegacy(),
+  //     bio: faker.lorem.sentence(),
+  //     id: i,
+  //   }));
+
+  //   setSuggestions(suggestions);
+  // }, []);
 
   return (
     <div className="mt-4 ml-10">

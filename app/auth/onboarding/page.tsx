@@ -50,7 +50,7 @@ function cancelDataChange({
   e: { preventDefault: () => void };
 }) {
   e.preventDefault();
-  router.push("/");
+  router.back();
 }
 
 function NewUser() {
@@ -80,6 +80,7 @@ function NewUser() {
     if (loading) return;
 
     setLoading(true);
+
 
     const formData = new FormData(e.currentTarget);
     const dataToChange = Object.fromEntries(formData.entries());

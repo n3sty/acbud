@@ -5,7 +5,7 @@ function ProfileWarning() {
   return (
     <>
       <Link href="/auth/onboarding" scroll={false}>
-        <div className="flex bg-primary bg-opacity-80 backdrop-blur-md sticky top-[74px] md:top-[100px] z-[2] md:-mx-1 md:mt-6 md:rounded-xl transition-all hover:scale-[1.02]">
+        <div className="flex bg-primary bg-opacity-80 backdrop-blur-md sticky top-[74px] md:top-[100px] z-[2] md:-mx-1 md:mt-0 md:rounded-xl transition-all hover:scale-[1.02]">
           <div className="group py-4 px-8 w-full">
             <h2 className="text-3xl text-white font-serif font-bold">
               Finalize your account
