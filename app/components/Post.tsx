@@ -72,6 +72,7 @@ function Post({
   );
 
   useEffect(() => {
+
     const hasLiked =
       likes.findIndex((like) => like.id === session?.user?.id) !== -1;
     setHasLiked(hasLiked);
@@ -83,10 +84,13 @@ function Post({
         doc(db, "posts", id, "likes", session?.user?.id as string)
       );
     } else {
+
+      console.log("here")
+
       await setDoc(
         doc(db, "posts", id, "likes", session?.user?.id as string),
         {
-          username: session?.user?.username,
+          username: session?.user?.name,
         }
       );
     }

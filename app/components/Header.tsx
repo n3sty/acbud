@@ -3,8 +3,8 @@
 import { useSession, signOut } from "next-auth/react";
 import { modalState } from "@/atoms/modalAtom";
 import Image from "next/image";
-import LogoText from '@/public/logo-text.svg'
-import LogoIcon from '@/public/logo-icon.svg'
+import LogoText from "@/public/logo-text.svg";
+import LogoIcon from "@/public/logo-icon.svg";
 import {
   MagnifyingGlassIcon,
   PlusCircleIcon,
@@ -26,12 +26,14 @@ function Header() {
         !session && "!grid-cols-1 !max-w-3xl"
       }`}
     >
-      <div className="text-base-content col-span-3 bg-white bg-opacity-50 backdrop-blur-md shadow-md py-1 px-3 -mx-4 sm:rounded-xl sm:mt-4 sm:border sm:top-6">
-        <div className="flex justify-between items-center mx-4 py-2 lg:py-0 max-w-6xl">
+      <div className="text-base-content col-span-3 bg-white bg-opacity-50 backdrop-blur-md md:shadow-md py-1 px-3 md:-mx-1 md:rounded-xl md:mt-4 md:border md:top-6">
+        <div className="flex justify-between items-center mx-4 py-2 md:py-0 max-w-6xl">
+
           {/* Left - Responsive Logo's*/}
+
           <div
             onClick={() => router.push("/")}
-            className="relative hidden lg:inline-grid cursor-pointer"
+            className="relative hidden md:inline-grid cursor-pointer"
           >
             <Image
               className="hover:scale-105 p-2 transform transition-all duration-200 ease-out"
@@ -43,17 +45,15 @@ function Header() {
           </div>
           <div
             onClick={() => router.push("/")}
-            className="relative hover:scale-110 transition-all duration-200 lg:hidden flex-shrink-0 cursor-pointer"
+            className="relative hover:scale-110 transition-all duration-200 md:hidden flex-shrink-0 cursor-pointer"
           >
-            <Image
-              src={LogoIcon}
-              alt="AC/BUD icon"
-              width={50}
-              height={50}
-            />
+            <Image src={LogoIcon} alt="AC/BUD icon" width={50} height={50} />
           </div>
 
           {/* Middle - Search input field */}
+
+          {/* REMOVED UNTIL FURTHER THOUGHT HAS BEEN PUT INTO THE APP */}
+
           {/* <div className="max-w-xs">
           <div className="relative mt-1 p-3 rounded-md">
             <div className="absolute inset-y-0 flex pl-3 items-center pointer-events-none">
@@ -86,10 +86,13 @@ function Header() {
 
                 <div onClick={() => signOut()} className="avatar">
                   <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
-                    <img
-                      src={session.user?.image as string}
-                      alt="profile picture"
-                    />
+                    {
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={session.user?.image as string}
+                        alt="profile picture"
+                      />
+                    }
                   </div>
                 </div>
                 <div className="dropdown md:hidden">
@@ -115,7 +118,7 @@ function Header() {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="menu menu-sm -mr-2 dropdown-content bg-base-100 rounded-lg p-1 z-[1] mt-2 shadow"
+                    className="menu menu-sm -mr-2 dropdown-content bg-base-100 rounded-lg p-1 z-20 mt-2 shadow"
                   >
                     <li className="rounded-sm">
                       <PaperAirplaneIcon className="dropdownbtn" />
@@ -138,7 +141,7 @@ function Header() {
               </>
             ) : (
               <p
-                className="text-md p-2 font-serif lg:text-2xl text-xl font-bold hover:cursor-pointer hover:scale-105 transition-all ease-out"
+                className="text-md p-2 font-serif text-3xl font-bold hover:cursor-pointer hover:scale-105 transition-all ease-out"
                 onClick={() => router.push("/auth/signin")}
               >
                 Sign In

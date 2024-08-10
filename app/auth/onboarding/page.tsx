@@ -1,4 +1,5 @@
 "use client";
+import { infoModalState } from "@/atoms/infoModalAtom";
 import { db, storage } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
@@ -7,6 +8,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 
 function HorizontalLine() {
   return <hr className="col-span-5 mt-4 mb-3 border-t-1 border-gray-300" />;
@@ -47,15 +49,16 @@ function cancelDataChange({
 }
 
 function NewUser() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useRecoilState(infoModalState);
 
   const filePickerRef = React.useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = React.useState<
     string | ArrayBuffer | null
-  >(null);
+  >(null); 
 
   const addImageToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -75,28 +78,34 @@ function NewUser() {
 
     const formData = new FormData(e.currentTarget);
     const dataToChange = Object.fromEntries(formData.entries());
-    const values = Object.values(dataToChange);
 
-    if (values.some((value) => value !== "")) {
-      // Update the user data in the database
-      const filteredDataToChange = Object.fromEntries(
-        Object.entries(dataToChange).filter(([key, value]) => value !== "")
-      );
+    // Get all the values that are not empty
+    const filteredDataToChange = Object.fromEntries(
+      Object.entries(dataToChange).filter(([key, value]) => value !== "")
+    );
 
-      await updateDoc(doc(db, "users", session?.user.id as string), {
-        ...filteredDataToChange,
-      });
-    } else {
-      // Handle empty values here
-      setLoading(false);
-      // return router.push(origin);
-    }
+    // Update the user data in the database
+    await updateDoc(doc(db, "users", session?.user.id as string), {
+      ...filteredDataToChange,
+    })
+
+    // Update the session data
+    const entries = Object.entries(filteredDataToChange);
+    const filteredArray = entries.filter(([key, value]) => key !== "image");
+
+    await update(...filteredArray);
+
+    // } else {
+    //   // Handle empty values here
+    //   setLoading(false);
+    //   return router.push(origin);
+    // }
 
     if (selectedFile) {
-      // Upload the image to firebase storage with the post ID
+      // Upload the image to firebase storage with the user ID
       const imageRef = ref(storage, `users/${session?.user.id}/image`);
 
-      // Get the image URL from firebase storage and update the original post with image
+      // Get the image URL from firebase storage and update the user image
       await uploadString(imageRef, selectedFile as string, "data_url").then(
         async (snapshot) => {
           const downloadURL = await getDownloadURL(imageRef);
@@ -105,10 +114,18 @@ function NewUser() {
           });
         }
       );
+
+      // Update the session data
+      await update({ image: selectedFile });
     }
 
+    // Reset the loading state and selected file
     setLoading(false);
     setSelectedFile(null);
+
+    // Redirect to the homepage with a success message
+    setOpen(true);
+    router.push("/?success=true&message=Your profile has been updated!");
   };
 
   return (
@@ -158,17 +175,12 @@ function NewUser() {
               <HorizontalLine />
               <OptionHeader option="Name" />
               <InputField
-                id="first-name"
+                id="name"
                 type="text"
-                placeholder={session?.user.name?.split(" ")[0]}
-                span={2}
+                placeholder={session?.user?.name as string}
+                span={4}
               />
-              <InputField
-                id="last-name"
-                type="text"
-                placeholder={session?.user.name?.split(" ")[1]}
-                span={2}
-              />
+              
 
               {/* Email address */}
               <HorizontalLine />
