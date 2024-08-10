@@ -86,6 +86,7 @@ function Post({
 
   // CHECK IF USER HAS LIKED THE POST TO SET THE HEART ICON
   useEffect(() => {
+
     const hasLiked =
       likes.findIndex((like) => like.id === session?.user?.id) !== -1;
     setHasLiked(hasLiked);
