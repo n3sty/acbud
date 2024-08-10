@@ -24,7 +24,7 @@ function InfoModal() {
           success ? "bg-white text-success" : "bg-error-content text-error"
         } p-8`}
       >
-        <form onClick={() => router.push(pathname)} method="dialog">
+        <form onClick={() => setOpen(false)} method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
           </button>
@@ -38,7 +38,7 @@ function InfoModal() {
       </div>
       <form
         method="dialog"
-        onClick={() => router.push(pathname)}
+        onClick={() => setOpen(false)}
         className="modal-backdrop"
       ></form>
     </dialog>
