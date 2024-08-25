@@ -20,7 +20,6 @@ function Feed() {
       }`}
     >
       <section className="col-span-2">
-        {session && !session.user.username && <ProfileWarning />}
         <Stories />
         <Posts />
       </section>
