@@ -10,7 +10,7 @@ function Suggestions() {
 
   useEffect(() => {
     const suggestions = [...Array(5)].map((_, i) => ({
-      username: faker.internet.userName(),
+      name: faker.internet.displayName(),
       avatar: faker.image.avatarLegacy(),
       bio: faker.lorem.sentence(),
       id: i,
@@ -27,7 +27,7 @@ function Suggestions() {
       </div>
 
       {suggestions.map((profile) => (
-        <SuggestionCard key={profile.id} img={profile.avatar} username={profile.username} bio={profile.bio}></SuggestionCard>
+        <SuggestionCard key={profile.id} img={profile.avatar} name={profile.name} bio={profile.bio}></SuggestionCard>
       ))}
     </div>
   );

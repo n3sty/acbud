@@ -39,7 +39,7 @@ function Modal() {
 
     // 1) Create a post and add to firestore 'posts' collection
     const docRef = await addDoc(collection(db, 'posts'), {
-      username: session?.user?.username,
+      name: session?.user?.name,
       caption: captionRef.current?.value,
       profileImg: session?.user?.image,
       timestamp: serverTimestamp(),

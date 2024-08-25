@@ -1,5 +1,5 @@
 export type Suggestion = {
-  username: string;
+  name: string;
   avatar: string;
   bio: string;
   id: number;

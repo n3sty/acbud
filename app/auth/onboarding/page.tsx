@@ -180,7 +180,7 @@ function NewUser() {
                 span={4}
               />
 
-              {/* Username */}
+              {/* Username
               <HorizontalLine />
               <OptionHeader option="Username" />
               <div className="join mx-2 col-span-4">
@@ -191,12 +191,12 @@ function NewUser() {
                   readOnly
                 />
                 <input
-                  name="username"
+                  name="name"
                   type="text"
-                  placeholder={session?.user?.username as string}
+                  placeholder={session?.user?.name as string}
                   className="input input-bordered w-full focus:outline-none join-item"
                 />
-              </div>
+              </div> */}
 
               {/* Profile photo */}
               <HorizontalLine />

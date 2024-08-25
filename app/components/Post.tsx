@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+// /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import {
   BookmarkIcon,
@@ -30,13 +30,13 @@ import { db } from "@/firebase";
 
 function Post({
   id,
-  username,
+  name,
   userImg,
   img,
   caption,
 }: {
   id: string;
-  username: string;
+  name: string;
   userImg: string;
   img: string;
   caption: string;
@@ -83,12 +83,9 @@ function Post({
         doc(db, "posts", id, "likes", session?.user?.id as string)
       );
     } else {
-      await setDoc(
-        doc(db, "posts", id, "likes", session?.user?.id as string),
-        {
-          username: session?.user?.username,
-        }
-      );
+      await setDoc(doc(db, "posts", id, "likes", session?.user?.id as string), {
+        name: session?.user?.name,
+      });
     }
   };
 
@@ -100,10 +97,23 @@ function Post({
 
     await addDoc(collection(db, "posts", id, "comments"), {
       comment: commentToSend,
-      username: session?.user?.username,
+      name: session?.user?.name,
       userImage: session?.user?.image,
       timestamp: serverTimestamp(),
     });
+  };
+
+  const deletePost = async (e: { preventDefault: () => void } | undefined) => {
+    e?.preventDefault();
+
+    try {
+      await deleteDoc(doc(db, "posts", id));
+      return;
+    } catch (error) {
+      console.error("Error removing document: ", error);
+    }
+
+    console.info("Document successfully removed!");
   };
 
   return (
@@ -111,13 +121,38 @@ function Post({
       {/* Header */}
 
       <div className="flex items-center p-5 gap-2">
+        {/* AVATAR */}
+
         <div className="avatar">
           <div className="rounded-full">
             <Image src={userImg} alt="" height={30} width={30} />
           </div>
         </div>
-        <p className="flex-1 font-bold">{username}</p>
-        <EllipsisHorizontalIcon className="h-6" />
+        <p className="flex-1 font-bold">{name}</p>
+
+        {/* POST OPTIONS */}
+
+        <div className="dropdown dropdown-end">
+          <EllipsisHorizontalIcon
+            className="btn btn-sm btn-circle btn-ghost"
+            tabIndex={0}
+            role="button"
+          />
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu menu-sm bg-base-100 rounded-box z-[1] shadow"
+          >
+            <li className="disabled">
+              <a>Report</a>
+            </li>
+            <li className="disabled">
+              <a>Edit</a>
+            </li>
+            <li className="text-red-600">
+              <a onClick={deletePost}>Remove</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* Image */}
@@ -161,7 +196,7 @@ function Post({
           </>
         )}
 
-        <span className="font-bold mr-1">{username}</span>
+        <span className="font-bold mr-1">{name}</span>
         {caption}
       </p>
 
@@ -171,13 +206,15 @@ function Post({
         <div className="ml-10 h-20 overflow-y-scroll scrollbar-hide">
           {comments.map((comment) => (
             <div key={comment.id} className="flex items-center space-x-2 mb-3">
-              <img
+              <Image
                 className="h-7 rounded-full"
                 src={comment.data().userImage}
                 alt=""
+                height={30}
+                width={30}
               />
               <p className="text-sm flex-1">
-                <span className="font-bold">{comment.data().username}</span>{" "}
+                <span className="font-bold">{comment.data().name}</span>{" "}
                 {comment.data().comment}
               </p>
 

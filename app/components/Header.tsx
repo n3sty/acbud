@@ -3,8 +3,8 @@
 import { useSession, signOut } from "next-auth/react";
 import { modalState } from "@/atoms/modalAtom";
 import Image from "next/image";
-import LogoText from '@/public/logo-text.svg'
-import LogoIcon from '@/public/logo-icon.svg'
+import LogoText from "@/public/logo-text.svg";
+import LogoIcon from "@/public/logo-icon.svg";
 import {
   MagnifyingGlassIcon,
   PlusCircleIcon,
@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
+import MiniProfile from "./MiniProfile";
 
 function Header() {
   const { data: session } = useSession();
@@ -45,12 +46,7 @@ function Header() {
             onClick={() => router.push("/")}
             className="relative hover:scale-110 transition-all duration-200 lg:hidden flex-shrink-0 cursor-pointer"
           >
-            <Image
-              src={LogoIcon}
-              alt="AC/BUD icon"
-              width={50}
-              height={50}
-            />
+            <Image src={LogoIcon} alt="AC/BUD icon" width={50} height={50} />
           </div>
 
           {/* Middle - Search input field */}
@@ -71,27 +67,85 @@ function Header() {
           <div className="flex items-center justify-end space-x-4">
             {session ? (
               <>
-                <div className="relative navbtn">
+                {/* CERTAIN ICONS DISABLED UNTIL FURTHER IMPLEMENTATION IS COMPLETE */}
+
+                {/* <div className="relative navbtn">
                   <PaperAirplaneIcon />
                   <span className="badge text-white bg-red-500 badge-md absolute -right-1 text-xs animate-pulse">
                     3
                   </span>
-                </div>
+                </div> */}
                 <PlusCircleIcon
                   onClick={() => setOpen(true)}
                   className="navbtn"
                 />
-                <UserGroupIcon className="navbtn" />
-                <HeartIcon className="navbtn" />
+                {/* <UserGroupIcon className="navbtn" /> */}
+                {/* <HeartIcon className="navbtn" /> */}
 
-                <div onClick={() => signOut()} className="avatar">
-                  <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
-                    <img
-                      src={session.user?.image as string}
-                      alt="profile picture"
-                    />
+                <div className="dropdown dropdown-end m-0 p-0">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    className="btn btn-ghost btn-circle avatar"
+                  >
+                    <div className="w-10 rounded-full">
+                      <Image
+                        src={session.user?.image as string}
+                        alt="profile picture"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
                   </div>
+
+                  <div tabIndex={0} className="dropdown-content w-80 bg-white rounded-xl min-h-24">
+                    <div className="flex flex-col items-center justify-center p-4">
+                      {/* Simple user info display */}
+                      <div className="flex flex-row w-full justify-between px-2">
+                        <Image
+                          src={session.user?.image as string}
+                          alt="profile picture"
+                          width={60}
+                          height={60}
+                          className="rounded-full self-start"
+                        />
+                        <div className="flex flex-col text-right justify-center ml-2">
+                          <h2 className="font-bold text-lg">
+                            {session.user?.name}
+                          </h2>
+                          <h3 className="text-sm text-gray-400">
+                            {session.user?.email}
+                          </h3>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => signOut()}
+                        className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+
+
+
                 </div>
+
+                {/* <div className="dropdown dropdown-end">
+                  <div tabIndex={0} role="button" className="avatar">
+                    <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
+                      <Image
+                        src={session.user?.image as string}
+                        alt="profile picture"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
+                  </div>
+
+                  <ul tabIndex={0} className="dropdown-content bg-red-500"></ul>
+                </div> */}
+
                 <div className="dropdown md:hidden">
                   <div
                     tabIndex={0}
