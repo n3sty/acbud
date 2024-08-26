@@ -33,6 +33,7 @@ function Posts() {
           key={post.id}
           id={post.id}
           name={post.data().name}
+          uid={post.data().uid}
           userImg={post.data().profileImg}
           img={post.data().image}
           caption={post.data().caption}

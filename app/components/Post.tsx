@@ -8,7 +8,7 @@ import {
   HeartIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
-
+import { deleteDocAndCol } from "@/lib/scripts/deleteDocAndCol";
 import Moment from "react-moment";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -31,12 +31,14 @@ import { db } from "@/firebase";
 function Post({
   id,
   name,
+  uid,
   userImg,
   img,
   caption,
 }: {
   id: string;
   name: string;
+  uid: string;
   userImg: string;
   img: string;
   caption: string;
@@ -50,7 +52,16 @@ function Post({
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
   >([]);
   const [hasLiked, setHasLiked] = useState(false);
+  const [owner, setOwner] = useState(false);
 
+  // CHECK IF USER IS THE OWNER OF THE POST
+  useEffect(() => {
+    if (session?.user?.id === uid) {
+      setOwner(true);
+    }
+  }, [session?.user?.id, uid]);
+
+  // UPDATE COMMENTS
   useEffect(
     () =>
       onSnapshot(
@@ -63,6 +74,7 @@ function Post({
     [id]
   );
 
+  // UPDATE LIKES
   useEffect(
     () =>
       onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
@@ -71,12 +83,14 @@ function Post({
     [id]
   );
 
+  // CHECK IF USER HAS LIKED THE POST TO SET THE HEART ICON
   useEffect(() => {
     const hasLiked =
       likes.findIndex((like) => like.id === session?.user?.id) !== -1;
     setHasLiked(hasLiked);
   }, [likes, session?.user?.id]);
 
+  // USER LIKED POST
   const likePost = async () => {
     if (hasLiked) {
       await deleteDoc(
@@ -89,6 +103,7 @@ function Post({
     }
   };
 
+  // UPLOAD COMMENT TYPED BY USER
   const sendComment = async (e: { preventDefault: () => void } | undefined) => {
     e?.preventDefault();
 
@@ -103,17 +118,18 @@ function Post({
     });
   };
 
+  // DELETE POST
   const deletePost = async (e: { preventDefault: () => void } | undefined) => {
     e?.preventDefault();
 
     try {
-      await deleteDoc(doc(db, "posts", id));
-      return;
+      await deleteDocAndCol(db, `posts/${id}`, ["/likes", "/comments"]);
     } catch (error) {
       console.error("Error removing document: ", error);
+      return;
     }
 
-    console.info("Document successfully removed!");
+    console.info("Document with ID", id, "successfully deleted!");
   };
 
   return (
@@ -132,27 +148,29 @@ function Post({
 
         {/* POST OPTIONS */}
 
-        <div className="dropdown dropdown-end">
-          <EllipsisHorizontalIcon
-            className="btn btn-sm btn-circle btn-ghost"
-            tabIndex={0}
-            role="button"
-          />
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu menu-sm bg-base-100 rounded-box z-[1] shadow"
-          >
-            <li className="disabled">
-              <a>Report</a>
-            </li>
-            <li className="disabled">
-              <a>Edit</a>
-            </li>
-            <li className="text-red-600">
-              <a onClick={deletePost}>Remove</a>
-            </li>
-          </ul>
-        </div>
+        {session && (
+          <div className="dropdown dropdown-end">
+            <EllipsisHorizontalIcon
+              className={`btn btn-sm btn-circle btn-ghost ${owner ? "" : "disabled"}`}
+              tabIndex={0}
+              role="button"
+            />
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu menu-sm bg-base-100 rounded-box z-[1] shadow"
+            >
+              <li className="disabled">
+                <a>Report</a>
+              </li>
+              <li className="disabled">
+                <a>Edit</a>
+              </li>
+              <li className="text-red-600">
+                <a onClick={deletePost}>Remove</a>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Image */}
