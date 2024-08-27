@@ -1,8 +1,6 @@
 import { db } from "@/firebase";
-import { FirestoreAdapter } from "@auth/firebase-adapter";
-import { type Adapter } from "next-auth/adapters";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
