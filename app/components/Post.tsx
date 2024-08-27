@@ -152,7 +152,9 @@ function Post({
         {session && (
           <div className="dropdown dropdown-end">
             <EllipsisHorizontalIcon
-              className={`btn btn-sm btn-circle btn-ghost ${owner ? "" : "disabled"}`}
+              className={`btn btn-sm btn-circle btn-ghost ${
+                owner ? "" : "disabled"
+              }`}
               tabIndex={0}
               role="button"
             />
@@ -176,13 +178,16 @@ function Post({
 
       {/* Image */}
 
-      <Image
-        className="object-cover w-full select-none drag-none"
-        src={img}
-        alt=""
-        height={640}
-        width={640}
-      />
+      <div className="">
+        <Image
+          className="object-fill w-full select-none drag-none"
+          src={img}
+          alt=""
+          width={1920}
+          height={1350}
+          // fill={true}
+        />
+      </div>
 
       {/* Buttons */}
 

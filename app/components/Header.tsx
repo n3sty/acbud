@@ -6,7 +6,6 @@ import Image from "next/image";
 import LogoText from "@/public/logo-text.svg";
 import LogoIcon from "@/public/logo-icon.svg";
 import {
-  MagnifyingGlassIcon,
   PlusCircleIcon,
   UserGroupIcon,
   HeartIcon,
@@ -14,7 +13,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
-import MiniProfile from "./MiniProfile";
 
 function Header() {
   const { data: session } = useSession();
@@ -48,20 +46,6 @@ function Header() {
           >
             <Image src={LogoIcon} alt="AC/BUD icon" width={50} height={50} />
           </div>
-
-          {/* Middle - Search input field */}
-          {/* <div className="max-w-xs">
-          <div className="relative mt-1 p-3 rounded-md">
-            <div className="absolute inset-y-0 flex pl-3 items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-500" />
-            </div>
-            <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered text-gray-500 backdrop-blur-md bg-opacity-10 block w-full pl-10 sm:text-sm rounded-md p-2"
-            />
-          </div>
-        </div> */}
 
           {/* Right - Buttons and Avatar */}
           <div className="flex items-center justify-end space-x-4">
@@ -130,21 +114,6 @@ function Header() {
 
 
                 </div>
-
-                {/* <div className="dropdown dropdown-end">
-                  <div tabIndex={0} role="button" className="avatar">
-                    <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
-                      <Image
-                        src={session.user?.image as string}
-                        alt="profile picture"
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                  </div>
-
-                  <ul tabIndex={0} className="dropdown-content bg-red-500"></ul>
-                </div> */}
 
                 <div className="dropdown md:hidden">
                   <div
