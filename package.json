@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth/firebase-adapter": "^2.4.2",
     "@glidejs/glide": "^3.6.2",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
@@ -22,7 +21,6 @@
     "autoprefixer": "^10.4.20",
     "compressorjs": "^1.2.1",
     "firebase": "^10.12.5",
-    "firebase-admin": "^12.4.0",
     "headlessui": "^0.0.0",
     "next": "^14.2.6",
     "next-auth": "^4.24.7",
