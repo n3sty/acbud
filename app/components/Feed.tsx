@@ -1,14 +1,16 @@
-"use client";
+// "use client";
 
 import React from "react";
 import MiniProfile from "./MiniProfile";
 import Posts from "./Posts";
-import Stories from "./Stories";
-import Suggestions from "./Suggestions";
-import { useSession } from "next-auth/react";
+// import Stories from "./Stories";
+// import Suggestions from "./Suggestions";
+// import NewToYou from "./NewToYou";
+import { getServerSession } from "next-auth";
 
-function Feed() {
-  const { data: session } = useSession();
+async function Feed() {
+  const session = await getServerSession();
+  console.log(session)
 
   return (
     <main
@@ -19,7 +21,7 @@ function Feed() {
       }`}
     >
       <section className="col-span-2">
-        <Stories />
+        {/* <Stories /> */}
         <Posts />
       </section>
 
@@ -28,7 +30,16 @@ function Feed() {
           <section className="relative max-w-sm hidden xl:inline-grid md:col-span-1">
             <div className="fixed max-w-sm">
               <MiniProfile />
-              <Suggestions />
+              {/* <Suggestions /> */}
+
+              {/* Instead of suggestions, add some sort of "recent uploads" or "useful for you" section,
+              where users can find certain actions performed by other users ("posts has been liked by ... people", 
+              "try this function!" or "maybe you can find purpose in this way? (with link to article 
+              regarding productivity on other websites??)") */}
+
+              {/* NEW TO YOU: section for useful (new) info */}
+              {/* <NewToYou /> */}
+
             </div>
           </section>
         </>
