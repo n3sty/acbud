@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import Post from "./Post";
 import {
@@ -32,7 +34,8 @@ function Posts() {
         <Post
           key={post.id}
           id={post.id}
-          username={post.data().username}
+          name={post.data().name}
+          uid={post.data().uid}
           userImg={post.data().profileImg}
           img={post.data().image}
           caption={post.data().caption}

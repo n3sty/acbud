@@ -1,16 +1,25 @@
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import Github from "next-auth/providers/github";
-
 import { db } from "@/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { NextAuthOptions } from "next-auth";
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
-  providers: [Github, Google],
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
-  pages: {
-    signIn: "/auth/signin",
-  },
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+  ],
+
+  session: { strategy: "jwt" },
+
+  pages: { signIn: "/auth/signin" },
 
   callbacks: {
     async signIn({ user, account, profile }) {
@@ -64,4 +73,5 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
   },
-});
+} satisfies NextAuthOptions;
+

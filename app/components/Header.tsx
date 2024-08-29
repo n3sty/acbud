@@ -6,7 +6,6 @@ import Image from "next/image";
 import LogoText from "@/public/logo-text.svg";
 import LogoIcon from "@/public/logo-icon.svg";
 import {
-  MagnifyingGlassIcon,
   PlusCircleIcon,
   UserGroupIcon,
   HeartIcon,
@@ -48,53 +47,78 @@ function Header() {
             className="relative hover:scale-110 transition-all duration-200 md:hidden flex-shrink-0 cursor-pointer"
           >
             <Image src={LogoIcon} alt="AC/BUD icon" width={50} height={50} />
+
           </div>
-
-          {/* Middle - Search input field */}
-
-          {/* REMOVED UNTIL FURTHER THOUGHT HAS BEEN PUT INTO THE APP */}
-
-          {/* <div className="max-w-xs">
-          <div className="relative mt-1 p-3 rounded-md">
-            <div className="absolute inset-y-0 flex pl-3 items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-500" />
-            </div>
-            <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered text-gray-500 backdrop-blur-md bg-opacity-10 block w-full pl-10 sm:text-sm rounded-md p-2"
-            />
-          </div>
-        </div> */}
 
           {/* Right - Buttons and Avatar */}
           <div className="flex items-center justify-end space-x-4">
             {session ? (
               <>
-                <div className="relative navbtn">
+                {/* CERTAIN ICONS DISABLED UNTIL FURTHER IMPLEMENTATION IS COMPLETE */}
+
+                {/* <div className="relative navbtn">
                   <PaperAirplaneIcon />
                   <span className="badge text-white bg-red-500 badge-md absolute -right-1 text-xs animate-pulse">
                     3
                   </span>
-                </div>
+                </div> */}
                 <PlusCircleIcon
                   onClick={() => setOpen(true)}
                   className="navbtn"
                 />
-                <UserGroupIcon className="navbtn" />
-                <HeartIcon className="navbtn" />
+                {/* <UserGroupIcon className="navbtn" /> */}
+                {/* <HeartIcon className="navbtn" /> */}
 
-                <div onClick={() => router.push("/auth/onboarding")} className="avatar">
-                  <div className="hover:ring hover:ring-secpndary rounded-full navbtn">
-                    {
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                <div className="dropdown dropdown-end m-0 p-0">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    className="btn btn-ghost btn-circle avatar"
+                  >
+                    <div className="w-10 rounded-full">
+                      <Image
                         src={session.user?.image as string}
                         alt="profile picture"
+                        width={30}
+                        height={30}
                       />
-                    }
+                    </div>
                   </div>
+
+                  <div tabIndex={0} className="dropdown-content w-80 bg-white rounded-xl min-h-24">
+                    <div className="flex flex-col items-center justify-center p-4">
+                      {/* Simple user info display */}
+                      <div className="flex flex-row w-full justify-between px-2">
+                        <Image
+                          src={session.user?.image as string}
+                          alt="profile picture"
+                          width={60}
+                          height={60}
+                          className="rounded-full self-start"
+                        />
+                        <div className="flex flex-col text-right justify-center ml-2">
+                          <h2 className="font-bold text-lg">
+                            {session.user?.name}
+                          </h2>
+                          <h3 className="text-sm text-gray-400">
+                            {session.user?.email}
+                          </h3>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => signOut()}
+                        className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+
+                  </div>
+
+
+
                 </div>
+
                 <div className="dropdown md:hidden">
                   <div
                     tabIndex={0}

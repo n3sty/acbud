@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+"use client"
 import Image from "next/image";
 import React from "react";
 import { signOut, useSession } from "next-auth/react";
@@ -17,11 +18,9 @@ function MiniProfile() {
       />
 
       <div className="flex-1 mx-4">
-        <h2 className="font-bold">
-          {
-            session?.user?.username ? session.user.username : session?.user?.name
-          }
-        </h2>
+
+        <h2 className="font-bold">{session?.user?.name}</h2>
+
         <h3 className="text-sm text-gray-400">Welcome to ACBUDS</h3>
       </div>
 

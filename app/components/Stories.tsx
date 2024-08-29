@@ -12,8 +12,9 @@ function Stories() {
 
   useEffect(() => {
     // Fetch stories from the backend
-    const suggestions = [...Array(11)].map((_, i) => ({
-      username: faker.internet.userName(),
+    const suggestions = [...Array(20)].map((_, i) => ({
+      name: faker.internet.displayName(),
+
       avatar: faker.image.avatarLegacy(),
       bio: faker.lorem.sentence(),
       id: i,
@@ -31,7 +32,7 @@ function Stories() {
         {session && (
           <Story
             img={session?.user?.image as string}
-            username={session?.user?.username as string}
+            name={session?.user?.name as string}
           />
         )}
 
@@ -39,7 +40,7 @@ function Stories() {
           <Story
             key={profile.id}
             img={profile.avatar}
-            username={profile.username}
+            name={profile.name}
           />
         ))}
       </div>

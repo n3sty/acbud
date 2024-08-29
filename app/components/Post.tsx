@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+// /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import {
   BookmarkIcon,
@@ -8,7 +8,7 @@ import {
   HeartIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
-
+import { deleteDocAndCol } from "@/lib/scripts/deleteDocAndCol";
 import Moment from "react-moment";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -30,13 +30,15 @@ import { db } from "@/firebase";
 
 function Post({
   id,
-  username,
+  name,
+  uid,
   userImg,
   img,
   caption,
 }: {
   id: string;
-  username: string;
+  name: string;
+  uid: string;
   userImg: string;
   img: string;
   caption: string;
@@ -50,7 +52,16 @@ function Post({
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
   >([]);
   const [hasLiked, setHasLiked] = useState(false);
+  const [owner, setOwner] = useState(false);
 
+  // CHECK IF USER IS THE OWNER OF THE POST
+  useEffect(() => {
+    if (session?.user?.id === uid) {
+      setOwner(true);
+    }
+  }, [session?.user?.id, uid]);
+
+  // UPDATE COMMENTS
   useEffect(
     () =>
       onSnapshot(
@@ -63,6 +74,7 @@ function Post({
     [id]
   );
 
+  // UPDATE LIKES
   useEffect(
     () =>
       onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
@@ -71,6 +83,7 @@ function Post({
     [id]
   );
 
+  // CHECK IF USER HAS LIKED THE POST TO SET THE HEART ICON
   useEffect(() => {
 
     const hasLiked =
@@ -78,24 +91,21 @@ function Post({
     setHasLiked(hasLiked);
   }, [likes, session?.user?.id]);
 
+  // USER LIKED POST
   const likePost = async () => {
     if (hasLiked) {
       await deleteDoc(
         doc(db, "posts", id, "likes", session?.user?.id as string)
       );
     } else {
+      await setDoc(doc(db, "posts", id, "likes", session?.user?.id as string), {
+        name: session?.user?.name,
+      });
 
-      console.log("here")
-
-      await setDoc(
-        doc(db, "posts", id, "likes", session?.user?.id as string),
-        {
-          username: session?.user?.name,
-        }
-      );
     }
   };
 
+  // UPLOAD COMMENT TYPED BY USER
   const sendComment = async (e: { preventDefault: () => void } | undefined) => {
     e?.preventDefault();
 
@@ -104,10 +114,24 @@ function Post({
 
     await addDoc(collection(db, "posts", id, "comments"), {
       comment: commentToSend,
-      username: session?.user?.username,
+      name: session?.user?.name,
       userImage: session?.user?.image,
       timestamp: serverTimestamp(),
     });
+  };
+
+  // DELETE POST
+  const deletePost = async (e: { preventDefault: () => void } | undefined) => {
+    e?.preventDefault();
+
+    try {
+      await deleteDocAndCol(db, `posts/${id}`, ["/likes", "/comments"]);
+    } catch (error) {
+      console.error("Error removing document: ", error);
+      return;
+    }
+
+    console.info("Document with ID", id, "successfully deleted!");
   };
 
   return (
@@ -115,24 +139,56 @@ function Post({
       {/* Header */}
 
       <div className="flex items-center p-5 gap-2">
+        {/* AVATAR */}
+
         <div className="avatar">
           <div className="rounded-full">
             <Image src={userImg} alt="" height={30} width={30} />
           </div>
         </div>
-        <p className="flex-1 font-bold">{username}</p>
-        <EllipsisHorizontalIcon className="h-6" />
+        <p className="flex-1 font-bold">{name}</p>
+
+        {/* POST OPTIONS */}
+
+        {session && (
+          <div className="dropdown dropdown-end">
+            <EllipsisHorizontalIcon
+              className={`btn btn-sm btn-circle btn-ghost ${
+                owner ? "" : "disabled"
+              }`}
+              tabIndex={0}
+              role="button"
+            />
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu menu-sm bg-base-100 rounded-box z-[1] shadow"
+            >
+              <li className="disabled">
+                <a>Report</a>
+              </li>
+              <li className="disabled">
+                <a>Edit</a>
+              </li>
+              <li className="text-red-600">
+                <a onClick={deletePost}>Remove</a>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Image */}
 
-      <Image
-        className="object-cover w-full select-none drag-none"
-        src={img}
-        alt=""
-        height={640}
-        width={640}
-      />
+      <div className="">
+        <Image
+          className="object-fill w-full select-none drag-none"
+          src={img}
+          alt=""
+          width={1920}
+          height={1350}
+          // fill={true}
+        />
+      </div>
 
       {/* Buttons */}
 
@@ -165,7 +221,7 @@ function Post({
           </>
         )}
 
-        <span className="font-bold mr-1">{username}</span>
+        <span className="font-bold mr-1">{name}</span>
         {caption}
       </p>
 
@@ -175,13 +231,15 @@ function Post({
         <div className="ml-10 h-20 overflow-y-scroll scrollbar-hide">
           {comments.map((comment) => (
             <div key={comment.id} className="flex items-center space-x-2 mb-3">
-              <img
+              <Image
                 className="h-7 rounded-full"
                 src={comment.data().userImage}
                 alt=""
+                height={30}
+                width={30}
               />
               <p className="text-sm flex-1">
-                <span className="font-bold">{comment.data().username}</span>{" "}
+                <span className="font-bold">{comment.data().name}</span>{" "}
                 {comment.data().comment}
               </p>
 

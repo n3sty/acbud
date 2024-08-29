@@ -9,6 +9,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import Compressor from "compressorjs";
 import { CameraIcon } from "@heroicons/react/24/solid";
 import { db, storage } from "@/firebase";
 import {
@@ -23,7 +24,6 @@ import { ref, getDownloadURL, uploadString } from "firebase/storage";
 
 function Modal() {
   const { data: session } = useSession();
-
   const [open, setOpen] = useRecoilState(modalState);
   const filePickerRef = React.useRef<HTMLInputElement>(null);
   const captionRef = React.useRef<HTMLInputElement>(null);
@@ -38,8 +38,9 @@ function Modal() {
     setLoading(true);
 
     // 1) Create a post and add to firestore 'posts' collection
-    const docRef = await addDoc(collection(db, 'posts'), {
-      username: session?.user?.username,
+    const docRef = await addDoc(collection(db, "posts"), {
+      name: session?.user?.name,
+      uid: session?.user?.id,
       caption: captionRef.current?.value,
       profileImg: session?.user?.image,
       timestamp: serverTimestamp(),
@@ -70,9 +71,26 @@ function Modal() {
   };
 
   const addImageToPost = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const compressOptions = {
+      quality: NaN,
+      maxWidth: 1920,
+      maxHeight: 1350,
+      success(result: any) {
+        try {
+          reader.readAsDataURL(result);
+        } catch (error) {
+          console.log("An error occured while reading in the image: ", error);
+        }
+        console.log("Image compressed successfully");
+      },
+      error(err: any) {
+        console.log("Error compressing image", err);
+      },
+    };
+
     const reader = new FileReader();
     if (e.target.files && e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0]);
+      new Compressor(e.target.files[0], compressOptions);
     }
 
     reader.onload = (readerEvent) => {
@@ -123,6 +141,7 @@ function Modal() {
             <input
               ref={filePickerRef}
               type="file"
+              accept="image/*"
               hidden
               onChange={(e) => addImageToPost(e)}
             />

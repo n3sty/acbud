@@ -8,6 +8,14 @@ import { Suggestion } from "@/types/types";
 function Suggestions() {
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
 
+  useEffect(() => {
+    const suggestions = [...Array(5)].map((_, i) => ({
+      name: faker.internet.displayName(),
+      avatar: faker.image.avatarLegacy(),
+      bio: faker.lorem.sentence(),
+      id: i,
+    }));
+
 
   // REAL DATA
   
@@ -36,7 +44,7 @@ function Suggestions() {
       </div>
 
       {suggestions.map((profile) => (
-        <SuggestionCard key={profile.id} img={profile.avatar} username={profile.username} bio={profile.bio}></SuggestionCard>
+        <SuggestionCard key={profile.id} img={profile.avatar} name={profile.name} bio={profile.bio}></SuggestionCard>
       ))}
     </div>
   );
