@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { signIn as signInWithProvider } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import ACBudText from "@/app/components/ACBUDtext";
 import Header from "@/app/components/Header";
 import Image from "next/image";
@@ -19,7 +19,7 @@ function SignIn() {
         <div className="flex flex-col space-y-4 w-full max-w-xs mt-20">
           <button
             className="btn p-3 h-14 bg-base-300 text-base-content rounded-lg hover:bg-blue-300 hover:text-[1rem] hover:shadow-xl transition-all duration-100 ease-out"
-            onClick={() => signInWithProvider("google", { callbackUrl: "/" })}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
           >
             <svg
               className="w-8 h-8"
@@ -49,7 +49,7 @@ function SignIn() {
 
           <button
             className="btn p-3 h-14 bg-gray-800 text-base-200 rounded-lg hover:bg-black/90 hover:text-[1rem] hover:shadow-xl hover:shadow-white transition-all duration-100 ease-out"
-            onClick={() => signInWithProvider("github", { callbackUrl: "/" })}
+            onClick={() => signIn("github", { callbackUrl: "/" })}
           >
             <svg
               className="w-8 h-8"

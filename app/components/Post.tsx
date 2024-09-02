@@ -58,8 +58,9 @@ function Post({
   useEffect(() => {
     if (session?.user?.id === uid) {
       setOwner(true);
+      console.log("Owner of the post with id:", id,  " is ", session?.user?.name);
     }
-  }, [session?.user?.id, uid]);
+  }, [session?.user?.id, id, session?.user?.name, uid]);
 
   // UPDATE COMMENTS
   useEffect(
@@ -165,7 +166,7 @@ function Post({
               <li className="disabled">
                 <a>Edit</a>
               </li>
-              <li className="text-red-600">
+              <li className={owner ? `text-red-600` : `hidden`}>
                 <a onClick={deletePost}>Remove</a>
               </li>
             </ul>
