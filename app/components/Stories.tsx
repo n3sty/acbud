@@ -14,6 +14,7 @@ function Stories() {
     // Fetch stories from the backend
     const suggestions = [...Array(20)].map((_, i) => ({
       name: faker.internet.displayName(),
+
       avatar: faker.image.avatarLegacy(),
       bio: faker.lorem.sentence(),
       id: i,

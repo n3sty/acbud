@@ -10,6 +10,7 @@ function Story({ img, name }: { img: string; name: string }) {
         {/* {name} */}
       </p>
     </div>
+
   );
 }
 

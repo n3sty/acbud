@@ -47,7 +47,6 @@ function Header() {
             className="relative hover:scale-110 transition-all duration-200 md:hidden flex-shrink-0 cursor-pointer"
           >
             <Image src={LogoIcon} alt="AC/BUD icon" width={50} height={50} />
-          </div>
 
           {/* Right - Buttons and Avatar */}
           <div className="flex items-center justify-end space-x-4">
@@ -111,6 +110,7 @@ function Header() {
                         Sign Out
                       </button>
                     </div>
+
                   </div>
 
 

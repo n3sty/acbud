@@ -102,6 +102,7 @@ function Post({
       await setDoc(doc(db, "posts", id, "likes", session?.user?.id as string), {
         name: session?.user?.name,
       });
+
     }
   };
 
