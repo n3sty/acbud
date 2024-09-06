@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import React from "react";
 import { signIn } from "next-auth/react";
 // import { signIn } from "@/auth";
@@ -20,7 +20,6 @@ function SignIn() {
         <div className="flex flex-col space-y-4 w-full max-w-xs mt-20">
           <form
             action={async () => {
-              "use server";
               await signIn("google", { callbackUrl: "/" });
             }}
           >
@@ -56,7 +55,6 @@ function SignIn() {
           </form>
 
           <form action={async () =>{
-            "use server";
             await signIn("github", { callbackUrl: "/", redirect: false });
           } }>
             <button
