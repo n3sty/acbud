@@ -125,6 +125,10 @@ function Post({
   const deletePost = async (e: { preventDefault: () => void } | undefined) => {
     e?.preventDefault();
 
+    if (!owner) {
+      return;
+    }
+
     try {
       await deleteDocAndCol(db, `posts/${id}`, ["/likes", "/comments"]);
     } catch (error) {

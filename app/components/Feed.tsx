@@ -10,7 +10,6 @@ import { getServerSession } from "next-auth";
 
 async function Feed() {
   const session = await getServerSession();
-  console.log(session)
 
   return (
   <main
