@@ -21,9 +21,7 @@ function Header() {
 
   return (
     <div
-      className={`grid w-full grid-cols-1 sticky top-0 z-10 md:grid-cols-2 md:max-w-3xl xl:grid-cols-3 xl:max-w-6xl mx-auto ${
-        !session && "!grid-cols-1 !max-w-3xl"
-      }`}
+      className={`grid w-full grid-cols-1 sticky top-0 z-10 md:grid-cols-2 md:max-w-3xl xl:grid-cols-3 xl:max-w-6xl mx-auto`}
     >
       <div className="text-base-content col-span-3 bg-white bg-opacity-50 backdrop-blur-md md:shadow-md py-1 px-3 md:-mx-1 md:rounded-xl md:mt-4 md:border md:top-6">
         <div className="flex justify-between items-center mx-4 py-2 md:py-0 max-w-6xl">
@@ -46,7 +44,8 @@ function Header() {
             className="relative hover:scale-110 transition-all duration-200 md:hidden flex-shrink-0 cursor-pointer"
           >
             <Image src={LogoIcon} alt="AC/BUD icon" width={50} height={50} />
-
+          </div>
+          <div>
             {/* Right - Buttons and Avatar */}
             <div className="flex items-center justify-end space-x-4">
               {session ? (

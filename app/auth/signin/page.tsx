@@ -1,7 +1,7 @@
 // "use client";
 import React from "react";
-// import { signIn as signInWithProvider } from "next-auth/react";
-import { signIn } from "@/auth";
+import { signIn } from "next-auth/react";
+// import { signIn } from "@/auth";
 import ACBudText from "@/app/components/ACBUDtext";
 import Header from "@/app/components/Header";
 import Image from "next/image";

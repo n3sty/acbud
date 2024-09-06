@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-// import { faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import React, { useEffect } from "react";
 import SuggestionCard from "./SuggestionCard";
 import { Suggestion } from "@/types/types";
@@ -14,7 +14,8 @@ function Suggestions() {
       avatar: faker.image.avatarLegacy(),
       bio: faker.lorem.sentence(),
       id: i,
-    }));
+    }))
+  });
 
   // REAL DATA
   
