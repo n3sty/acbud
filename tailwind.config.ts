@@ -39,7 +39,7 @@ const config: Config = {
   ],
   daisyui: {
     styled: true,
-    themes: true,
+    themes: ["light"],
     base: true,
     utils: true,
     logs: true,
