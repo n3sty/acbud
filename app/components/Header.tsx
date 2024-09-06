@@ -27,7 +27,6 @@ function Header() {
     >
       <div className="text-base-content col-span-3 bg-white bg-opacity-50 backdrop-blur-md md:shadow-md py-1 px-3 md:-mx-1 md:rounded-xl md:mt-4 md:border md:top-6">
         <div className="flex justify-between items-center mx-4 py-2 md:py-0 max-w-6xl">
-
           {/* Left - Responsive Logo's*/}
 
           <div
@@ -48,127 +47,127 @@ function Header() {
           >
             <Image src={LogoIcon} alt="AC/BUD icon" width={50} height={50} />
 
-          {/* Right - Buttons and Avatar */}
-          <div className="flex items-center justify-end space-x-4">
-            {session ? (
-              <>
-                {/* CERTAIN ICONS DISABLED UNTIL FURTHER IMPLEMENTATION IS COMPLETE */}
+            {/* Right - Buttons and Avatar */}
+            <div className="flex items-center justify-end space-x-4">
+              {session ? (
+                <>
+                  {/* CERTAIN ICONS DISABLED UNTIL FURTHER IMPLEMENTATION IS COMPLETE */}
 
-                {/* <div className="relative navbtn">
+                  {/* <div className="relative navbtn">
                   <PaperAirplaneIcon />
                   <span className="badge text-white bg-red-500 badge-md absolute -right-1 text-xs animate-pulse">
                     3
                   </span>
                 </div> */}
-                <PlusCircleIcon
-                  onClick={() => setOpen(true)}
-                  className="navbtn"
-                />
-                {/* <UserGroupIcon className="navbtn" /> */}
-                {/* <HeartIcon className="navbtn" /> */}
+                  <PlusCircleIcon
+                    onClick={() => setOpen(true)}
+                    className="navbtn"
+                  />
+                  {/* <UserGroupIcon className="navbtn" /> */}
+                  {/* <HeartIcon className="navbtn" /> */}
 
-                <div className="dropdown dropdown-end m-0 p-0">
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    className="btn btn-ghost btn-circle avatar"
-                  >
-                    <div className="w-10 rounded-full">
-                      <Image
-                        src={session.user?.image as string}
-                        alt="profile picture"
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                  </div>
-
-                  <div tabIndex={0} className="dropdown-content w-80 bg-white rounded-xl min-h-24">
-                    <div className="flex flex-col items-center justify-center p-4">
-                      {/* Simple user info display */}
-                      <div className="flex flex-row w-full justify-between px-2">
+                  <div className="dropdown dropdown-end m-0 p-0">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className="btn btn-ghost btn-circle avatar"
+                    >
+                      <div className="w-10 rounded-full">
                         <Image
                           src={session.user?.image as string}
                           alt="profile picture"
-                          width={60}
-                          height={60}
-                          className="rounded-full self-start"
+                          width={30}
+                          height={30}
                         />
-                        <div className="flex flex-col text-right justify-center ml-2">
-                          <h2 className="font-bold text-lg">
-                            {session.user?.name}
-                          </h2>
-                          <h3 className="text-sm text-gray-400">
-                            {session.user?.email}
-                          </h3>
-                        </div>
                       </div>
-                      <button
-                        onClick={() => signOut()}
-                        className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
-                      >
-                        Sign Out
-                      </button>
                     </div>
 
-                  </div>
-
-
-
-                </div>
-
-                <div className="dropdown md:hidden">
-                  <div
-                    tabIndex={0}
-                    role="button"
-                    className="btn btn-ghost w-12 rounded-lg p-1"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-8 w-8"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                    <div
+                      tabIndex={0}
+                      className="dropdown-content w-80 bg-white rounded-xl min-h-24"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h7"
-                      />
-                    </svg>
+                      <div className="flex flex-col items-center justify-center p-4">
+                        {/* Simple user info display */}
+                        <div className="flex flex-row w-full justify-between px-2">
+                          <Image
+                            src={session.user?.image as string}
+                            alt="profile picture"
+                            width={60}
+                            height={60}
+                            className="rounded-full self-start"
+                          />
+                          <div className="flex flex-col text-right justify-center ml-2">
+                            <h2 className="font-bold text-lg">
+                              {session.user?.name}
+                            </h2>
+                            <h3 className="text-sm text-gray-400">
+                              {session.user?.email}
+                            </h3>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => signOut()}
+                          className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <ul
-                    tabIndex={0}
-                    className="menu menu-sm -mr-2 dropdown-content bg-base-100 rounded-lg p-1 z-20 mt-2 shadow"
-                  >
-                    <li className="rounded-sm">
-                      <PaperAirplaneIcon className="dropdownbtn" />
-                    </li>
-                    <li>
-                      <PlusCircleIcon
-                        onClick={() => setOpen(true)}
-                        className="dropdownbtn"
-                      />
-                    </li>
-                    <li>
-                      <UserGroupIcon className="dropdownbtn" />
-                    </li>
-                    <li>
-                      <HeartIcon className="dropdownbtn" />
-                    </li>
-                  </ul>
-                </div>
-                {/* <HomeIcon onClick={() => router.push("/")} className="navbtn" /> */}
-              </>
-            ) : (
-              <p
-                className="text-md p-2 font-serif text-3xl font-bold hover:cursor-pointer hover:scale-105 transition-all ease-out"
-                onClick={() => router.push("/auth/signin")}
-              >
-                Sign In
-              </p>
-            )}
+
+                  <div className="dropdown md:hidden">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="btn btn-ghost w-12 rounded-lg p-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-8 w-8"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4 6h16M4 12h16M4 18h7"
+                        />
+                      </svg>
+                    </div>
+                    <ul
+                      tabIndex={0}
+                      className="menu menu-sm -mr-2 dropdown-content bg-base-100 rounded-lg p-1 z-20 mt-2 shadow"
+                    >
+                      <li className="rounded-sm">
+                        <PaperAirplaneIcon className="dropdownbtn" />
+                      </li>
+                      <li>
+                        <PlusCircleIcon
+                          onClick={() => setOpen(true)}
+                          className="dropdownbtn"
+                        />
+                      </li>
+                      <li>
+                        <UserGroupIcon className="dropdownbtn" />
+                      </li>
+                      <li>
+                        <HeartIcon className="dropdownbtn" />
+                      </li>
+                    </ul>
+                  </div>
+                  {/* <HomeIcon onClick={() => router.push("/")} className="navbtn" /> */}
+                </>
+              ) : (
+                <p
+                  className="text-md p-2 font-serif text-3xl font-bold hover:cursor-pointer hover:scale-105 transition-all ease-out"
+                  onClick={() => router.push("/auth/signin")}
+                >
+                  Sign In
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
