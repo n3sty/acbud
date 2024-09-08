@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { signIn } from "next-auth/react";
-// import { signIn } from "@/auth";
 import ACBudText from "@/app/components/ACBUDtext";
 import Header from "@/app/components/Header";
 import Image from "next/image";
@@ -15,7 +14,7 @@ function SignIn() {
       <div className="flex flex-col items-center justify-center -mt-[10rem] min-h-screen px-14 text-center py-2">
         <Image width={300} height={200} src={LogoText} alt="" />
         <p className="font-sans text-xl">
-          Get productive, join <ACBudText size="text-2xl" />{" "}
+          Get productive, join <ACBudText size="text-3xl" /> today.
         </p>
         <div className="flex flex-col space-y-4 w-full max-w-xs mt-20">
           <form

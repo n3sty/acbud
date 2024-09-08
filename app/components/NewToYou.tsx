@@ -27,7 +27,12 @@ function NewToYou() {
       subject: "new_like",
       user: "Noah Siemerink",
       post: "post_id#1234"
-    }
+    },
+    card4: {
+      subject: "new_post",
+      user: "Mees Siemerink",
+      post: "post_id#1235"
+    },
   };
 
   return (
@@ -41,6 +46,7 @@ function NewToYou() {
         <NewToYouCard props={fakeCards.card1} />
         <NewToYouCard props={fakeCards.card2} />
         <NewToYouCard props={fakeCards.card3} />
+        <NewToYouCard props={fakeCards.card4} />
       </div>
     </div>
   );

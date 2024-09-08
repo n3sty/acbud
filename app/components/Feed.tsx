@@ -5,7 +5,7 @@ import MiniProfile from "./MiniProfile";
 import Posts from "./Posts";
 // import Stories from "./Stories";
 // import Suggestions from "./Suggestions";
-// import NewToYou from "./NewToYou";
+import NewToYou from "./NewToYou";
 import { getServerSession } from "next-auth";
 
 async function Feed() {
@@ -37,7 +37,7 @@ async function Feed() {
               regarding productivity on other websites??)") */}
 
               {/* NEW TO YOU: section for useful (new) info */}
-              {/* <NewToYou /> */}
+              <NewToYou />
 
             </div>
           </section>
