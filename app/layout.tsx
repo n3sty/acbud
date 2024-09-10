@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import SessionWrapper from "./components/auth/SessionWrapper";
 import RecoilContextProvider from "./components/db/RecoilContextProvider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -38,7 +37,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionWrapper>
       <RecoilContextProvider>
         <html className="bg-base-200" data-theme="light" lang="en">
           <meta
@@ -52,6 +50,5 @@ export default function RootLayout({
           </body>
         </html>
       </RecoilContextProvider>
-    </SessionWrapper>
   );
 }

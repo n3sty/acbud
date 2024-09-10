@@ -1,6 +1,5 @@
+/* eslint-disable @next/next/no-async-client-component */
 "use client";
-
-import { useSession, signOut } from "next-auth/react";
 import { modalState } from "@/atoms/modalAtom";
 import Image from "next/image";
 import LogoText from "@/public/logo-text.svg";
@@ -13,11 +12,17 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
+import { createClient } from "@/app/utils/supabase/client";
 
-function Header() {
-  const { data: session } = useSession();
-  const [open, setOpen] = useRecoilState(modalState);
+async function Header() {
+  // Get and set modalstate value
+  const [, setOpen] = useRecoilState(modalState);
+
+  // Initialize router
   const router = useRouter();
+
+  const supabase = createClient();
+  const { data: {user} } = await supabase.auth.getUser();
 
   return (
     <div
@@ -48,7 +53,7 @@ function Header() {
           <div>
             {/* Right - Buttons and Avatar */}
             <div className="flex items-center justify-end space-x-4">
-              {session ? (
+              {user ? (
                 <>
                   {/* CERTAIN ICONS DISABLED UNTIL FURTHER IMPLEMENTATION IS COMPLETE */}
 
@@ -72,12 +77,12 @@ function Header() {
                       className="btn btn-ghost btn-circle avatar"
                     >
                       <div className="w-10 rounded-full">
-                        <Image
-                          src={session.user?.image as string}
+                        {/* <Image
+                          src={user?. as string}
                           alt="profile picture"
                           width={30}
                           height={30}
-                        />
+                        /> */}
                       </div>
                     </div>
 
@@ -88,26 +93,23 @@ function Header() {
                       <div className="flex flex-col items-center justify-center p-4">
                         {/* Simple user info display */}
                         <div className="flex flex-row w-full justify-between px-2">
-                          <Image
+                          {/* <Image
                             src={session.user?.image as string}
                             alt="profile picture"
                             width={60}
                             height={60}
                             className="rounded-full self-start"
-                          />
+                          /> */}
                           <div className="flex flex-col text-right justify-center ml-2">
                             <h2 className="font-bold text-lg">
-                              {session.user?.name}
+                              {/* {session.user?.name} */}
                             </h2>
                             <h3 className="text-sm text-gray-400">
-                              {session.user?.email}
+                              {/* {session.user?.email} */}
                             </h3>
                           </div>
                         </div>
-                        <button
-                          onClick={() => signOut()}
-                          className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
-                        >
+                        <button className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 ">
                           Sign Out
                         </button>
                       </div>

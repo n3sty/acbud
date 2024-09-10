@@ -12,7 +12,6 @@ import { deleteDocAndCol } from "@/lib/scripts/deleteDocAndCol";
 import Moment from "react-moment";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import {
   addDoc,
   collection,
@@ -43,7 +42,7 @@ function Post({
   img: string;
   caption: string;
 }) {
-  const { data: session } = useSession();
+  const session = true;
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
@@ -55,17 +54,17 @@ function Post({
   const [owner, setOwner] = useState(false);
 
   // CHECK IF USER IS THE OWNER OF THE POST
-  useEffect(() => {
-    if (session?.user?.id === uid) {
-      setOwner(true);
-      console.log(
-        "Owner of the post with id:",
-        id,
-        " is ",
-        session?.user?.name
-      );
-    }
-  }, [session?.user?.id, id, session?.user?.name, uid]);
+  // useEffect(() => {
+  //   if (session?.user?.id === uid) {
+  //     setOwner(true);
+  //     console.log(
+  //       "Owner of the post with id:",
+  //       id,
+  //       " is ",
+  //       session?.user?.name
+  //     );
+  //   }
+  // }, [session?.user?.id, id, session?.user?.name, uid]);
 
   // UPDATE COMMENTS
   useEffect(
@@ -90,40 +89,40 @@ function Post({
   );
 
   // CHECK IF USER HAS LIKED THE POST TO SET THE HEART ICON
-  useEffect(() => {
-    const hasLiked =
-      likes.findIndex((like) => like.id === session?.user?.id) !== -1;
-    setHasLiked(hasLiked);
-  }, [likes, session?.user?.id]);
+  // useEffect(() => {
+  //   const hasLiked =
+  //     likes.findIndex((like) => like.id === session?.user?.id) !== -1;
+  //   setHasLiked(hasLiked);
+  // }, [likes, session?.user?.id]);
 
   // USER LIKED POST
-  const likePost = async () => {
-    if (hasLiked) {
-      await deleteDoc(
-        doc(db, "posts", id, "likes", session?.user?.id as string)
-      );
-    } else {
-      await setDoc(doc(db, "posts", id, "likes", session?.user?.id as string), {
-        name: session?.user?.name,
-      });
-    }
-  };
+  // const likePost = async () => {
+  //   if (hasLiked) {
+  //     await deleteDoc(
+  //       doc(db, "posts", id, "likes", session?.user?.id as string)
+  //     );
+  //   } else {
+  //     await setDoc(doc(db, "posts", id, "likes", session?.user?.id as string), {
+  //       name: session?.user?.name,
+  //     });
+  //   }
+  // };
 
   // UPLOAD COMMENT TYPED BY USER
-  const sendComment = async (e: { preventDefault: () => void } | undefined) => {
-    e?.preventDefault();
+  // const sendComment = async (e: { preventDefault: () => void } | undefined) => {
+  //   e?.preventDefault();
 
-    const commentToSend = comment;
-    setComment("");
+  //   const commentToSend = comment;
+  //   setComment("");
 
-    await addDoc(collection(db, "posts", id, "comments"), {
-      comment: commentToSend,
-      name: session?.user?.name,
-      uid: session?.user?.id,
-      userImage: session?.user?.image,
-      timestamp: serverTimestamp(),
-    });
-  };
+  //   await addDoc(collection(db, "posts", id, "comments"), {
+  //     comment: commentToSend,
+  //     name: session?.user?.name,
+  //     uid: session?.user?.id,
+  //     userImage: session?.user?.image,
+  //     timestamp: serverTimestamp(),
+  //   });
+  // };
 
   // DELETE POST
   // TODO: Add a confirmation dialog before deleting the post
@@ -221,11 +220,13 @@ function Post({
             <div className="flex space-x-2 px-2">
               {hasLiked ? (
                 <HeartIconFilled
-                  onClick={likePost}
+                  // onClick={likePost}
                   className="postbtn text-red-500 scale-110"
                 />
               ) : (
-                <HeartIcon onClick={likePost} className="postbtn" />
+                <HeartIcon 
+                // onClick={likePost} 
+                className="postbtn" />
               )}
 
               <PaperAirplaneIcon className="postbtn" />
@@ -275,7 +276,7 @@ function Post({
           <button
             type="submit"
             disabled={!comment.trim()}
-            onClick={sendComment}
+            // onClick={sendComment}
             className="font-semibold text-blue-400"
           >
             Post

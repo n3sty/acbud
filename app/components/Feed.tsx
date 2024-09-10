@@ -6,17 +6,25 @@ import Posts from "./Posts";
 // import Stories from "./Stories";
 // import Suggestions from "./Suggestions";
 import NewToYou from "./NewToYou";
-import { getServerSession } from "next-auth";
+import { createClient } from "../utils/supabase/server";
+import { redirect } from "next/navigation";
 
 async function Feed() {
-  const session = await getServerSession();
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+
+  // if (error) {
+  //   console.error(error)
+  //   redirect('/auth/signin');
+  // }
 
   return (
   <main
       className={`grid text-base-content w-full 
       grid-cols-1 md:grid-cols-2 md:max-w-3xl 
       xl:grid-cols-3 xl:max-w-6xl mx-auto ${
-        !session && "!grid-cols-1 !max-w-3xl"
+        !data && "!grid-cols-1 !max-w-3xl"
       }`}
     >
       <section className="col-span-2">
@@ -24,7 +32,7 @@ async function Feed() {
         <Posts />
       </section>
 
-      {session && (
+      {data && (
         <>
           <section className="relative max-w-sm hidden xl:inline-grid md:col-span-1">
             <div className="fixed max-w-sm">

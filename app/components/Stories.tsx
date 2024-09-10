@@ -4,10 +4,9 @@ import React, { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Story from "./Story";
 import { Suggestion } from "../../types/types";
-import { useSession } from "next-auth/react";
 
 function Stories() {
-  const { data: session } = useSession();
+  const session = true
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
   useEffect(() => {
@@ -29,12 +28,12 @@ function Stories() {
   return (
     <>
       <div className="grid grid-cols-4 scrollbar-hide md:grid-cols-4 gap-2 border-gray-300 border-[2px] p-4 bg-white mt-6 rounded-xl transition-transform">
-        {session && (
+        {/* {session && (
           <Story
             img={session?.user?.image as string}
             name={session?.user?.name as string}
           />
-        )}
+        )} */}
 
         {suggestions.slice(0, showAll ? suggestions.length : maxRows).map((profile) => (
           <Story
