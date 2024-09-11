@@ -20,6 +20,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "autoprefixer": "^10.4.20",
     "compressorjs": "^1.2.1",
+    "emoji-picker-react": "^4.12.0",
     "firebase": "^10.12.5",
     "headlessui": "^0.0.0",
     "next": "^14.2.6",

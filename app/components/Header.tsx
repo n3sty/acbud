@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-async-client-component */
 "use client";
 import { modalState } from "@/atoms/modalAtom";
 import Image from "next/image";
@@ -13,16 +12,23 @@ import {
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import { createClient } from "@/app/utils/supabase/client";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
 
-async function Header() {
-  // Get and set modalstate value
+function Header() {
+  // Getters and setters
   const [, setOpen] = useRecoilState(modalState);
+  const [user, setSession] = useState<User | null>(null);
 
-  // Initialize router
+  // Initialize router & supabase Client
   const router = useRouter();
-
   const supabase = createClient();
-  const { data: {user} } = await supabase.auth.getUser();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setSession(user);
+    });
+  }, [supabase, user]);
 
   return (
     <div
@@ -77,12 +83,12 @@ async function Header() {
                       className="btn btn-ghost btn-circle avatar"
                     >
                       <div className="w-10 rounded-full">
-                        {/* <Image
-                          src={user?. as string}
+                        <Image
+                          src={user.user_metadata?.picture}
                           alt="profile picture"
                           width={30}
                           height={30}
-                        /> */}
+                        />
                       </div>
                     </div>
 
@@ -93,23 +99,26 @@ async function Header() {
                       <div className="flex flex-col items-center justify-center p-4">
                         {/* Simple user info display */}
                         <div className="flex flex-row w-full justify-between px-2">
-                          {/* <Image
-                            src={session.user?.image as string}
+                          <Image
+                            src={user.user_metadata?.picture}
                             alt="profile picture"
                             width={60}
                             height={60}
                             className="rounded-full self-start"
-                          /> */}
+                          />
                           <div className="flex flex-col text-right justify-center ml-2">
                             <h2 className="font-bold text-lg">
-                              {/* {session.user?.name} */}
+                              {user.user_metadata?.name}
                             </h2>
                             <h3 className="text-sm text-gray-400">
-                              {/* {session.user?.email} */}
+                              {user.user_metadata.email}
                             </h3>
                           </div>
                         </div>
-                        <button className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 ">
+                        <button
+                          className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
+                          onClick={() => supabase.auth.signOut()}
+                        >
                           Sign Out
                         </button>
                       </div>
@@ -158,7 +167,6 @@ async function Header() {
                       </li>
                     </ul>
                   </div>
-                  {/* <HomeIcon onClick={() => router.push("/")} className="navbtn" /> */}
                 </>
               ) : (
                 <p

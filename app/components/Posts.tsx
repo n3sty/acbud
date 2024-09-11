@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Post from "./Post";
+import Post from "./feed/Post";
 import {
   collection,
   onSnapshot,
@@ -27,6 +27,8 @@ function Posts() {
       ),
     []
   );
+
+
 
   return (
     <div>

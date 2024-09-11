@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import Header from "./components/Header";
-import Feed from "./components/Feed";
+import Feed from "./components/feed/Feed";
 import Modal from "./components/Modal";
 import InfoModal from "./components/InfoModal";
 import Loading from "./loading";

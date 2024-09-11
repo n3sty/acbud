@@ -1,7 +1,7 @@
 "use client";
 
 import { modalState } from "@/atoms/modalAtom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   Dialog,
@@ -20,9 +20,20 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
+import { createClient } from "../utils/supabase/client";
+import type { User } from "@supabase/supabase-js";
+import Image from "next/image";
 
 function Modal() {
-  const session = true;
+  const [user, setSession] = useState<User | null>(null);
+
+  const supabase = createClient();
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setSession(user);
+    });
+  });
+
   const [open, setOpen] = useRecoilState(modalState);
   const filePickerRef = React.useRef<HTMLInputElement>(null);
   const captionRef = React.useRef<HTMLInputElement>(null);
@@ -37,34 +48,36 @@ function Modal() {
     setLoading(true);
 
     // 1) Create a post and add to firestore 'posts' collection
-    // const docRef = await addDoc(collection(db, "posts"), {
-    //   name: session?.user?.name,
-    //   uid: session?.user?.id,
-    //   caption: captionRef.current?.value,
-    //   profileImg: session?.user?.image,
-    //   timestamp: serverTimestamp(),
-    // });
+    const docRef = await addDoc(collection(db, "posts"), {
+      name: user?.user_metadata.name,
+      uid: user?.id,
+      caption: captionRef.current?.value,
+      profileImg: user?.user_metadata.picture,
+      timestamp: serverTimestamp(),
+    });
 
     // 2) Get the post ID for the newly created post
-    // console.log("New doc added with ID", docRef.id);
+    console.log("New doc added with ID", docRef.id);
 
     // 3) Upload the image to firebase storage with the post ID
-    // const imageRef = ref(storage, `posts/${docRef.id}/image`);
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
     // 4) Get the image URL from firebase storage and update the original post with image
-    // if (selectedFile) {
-    //   await uploadString(imageRef, selectedFile as string, "data_url").then(
-    //     async (snapshot) => {
-    //       const downloadURL = await getDownloadURL(imageRef);
-    //       await updateDoc(doc(db, "posts", docRef.id), {
-    //         image: downloadURL,
-    //       });
-    //     }
-    //   );
-    // Reset the modal and states
-    setOpen(false);
-    setLoading(false);
-    setSelectedFile(null);
+    if (selectedFile) {
+      await uploadString(imageRef, selectedFile as string, "data_url").then(
+        async (snapshot) => {
+          const downloadURL = await getDownloadURL(imageRef);
+          await updateDoc(doc(db, "posts", docRef.id), {
+            image: downloadURL,
+          });
+        }
+      );
+
+      // Reset the modal and states
+      setOpen(false);
+      setLoading(false);
+      setSelectedFile(null);
+    }
   };
 
   const addImageToPost = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +105,7 @@ function Modal() {
 
     reader.onload = (readerEvent) => {
       if (readerEvent.target) {
-        // setSelectedFile(readerEvent.target.result);
+        setSelectedFile(readerEvent.target.result);
       }
     };
   };
@@ -118,29 +131,31 @@ function Modal() {
 
             {/* Camera Icon with File Input */}
 
-            {/* {selectedFile ? (
-              // <img
-              //   className="w-full object-contain cursor-pointer"
-              //   src={selectedFile.toString()}
-              //   onClick={() => filePickerRef.current?.click()}
-              //   alt=""
-              // />
-            // ) : (
-              // <div
-              //   onClick={() => filePickerRef.current?.click()}
-              //   className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-primary transition-all hover:bg-primary/80 cursor-pointer"
-              // >
-              //   <CameraIcon className="h-8 w-8 text-white" aria-hidden="true" />
-              // </div>
-            // )}
+            {selectedFile ? (
+              <Image
+                className="w-full object-contain cursor-pointer"
+                src={selectedFile.toString()}
+                onClick={() => filePickerRef.current?.click()}
+                alt=""
+                width={1920}
+                height={1350}
+              />
+            ) : (
+              <div
+                onClick={() => filePickerRef.current?.click()}
+                className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-primary transition-all hover:bg-primary/80 cursor-pointer"
+              >
+                <CameraIcon className="h-8 w-8 text-white" aria-hidden="true" />
+              </div>
+            )}
 
-            // <input
-            //   ref={filePickerRef}
-            //   type="file"
-            //   accept="image/*"
-            //   hidden
-            //   onChange={(e) => addImageToPost(e)}
-            // />
+            <input
+              ref={filePickerRef}
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(e) => addImageToPost(e)}
+            />
 
             {/* Caption Input */}
             <div className="mt-2">

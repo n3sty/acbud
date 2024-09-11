@@ -1,12 +1,8 @@
-// "use client";
-
 import React from "react";
-import MiniProfile from "./MiniProfile";
-import Posts from "./Posts";
-// import Stories from "./Stories";
-// import Suggestions from "./Suggestions";
-import NewToYou from "./NewToYou";
-import { createClient } from "../utils/supabase/server";
+import MiniProfile from "../MiniProfile";
+import Posts from "../Posts";
+import NewToYou from "../NewToYou";
+import { createClient } from "../../utils/supabase/server";
 import { redirect } from "next/navigation";
 
 async function Feed() {
@@ -14,10 +10,10 @@ async function Feed() {
 
   const { data, error } = await supabase.auth.getUser();
 
-  // if (error) {
-  //   console.error(error)
-  //   redirect('/auth/signin');
-  // }
+  if (error) {
+    console.error(error)
+    redirect('/auth/signin');
+  }
 
   return (
   <main
@@ -28,7 +24,6 @@ async function Feed() {
       }`}
     >
       <section className="col-span-2">
-        {/* <Stories /> */}
         <Posts />
       </section>
 
