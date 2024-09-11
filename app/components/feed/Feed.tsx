@@ -12,7 +12,6 @@ async function Feed() {
 
   if (error) {
     console.error(error)
-    redirect('/auth/signin');
   }
 
   return (
