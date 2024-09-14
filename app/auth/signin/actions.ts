@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/app/utils/supabase/server";
 
-export async function loginGoogle(formData: FormData) {
+export async function loginGoogle() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -27,7 +27,7 @@ export async function loginGoogle(formData: FormData) {
   redirect("/");
 }
 
-export async function loginGithub(formData: FormData) {
+export async function loginGithub() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({

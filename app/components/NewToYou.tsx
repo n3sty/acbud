@@ -42,7 +42,7 @@ function NewToYou() {
         <button className="text-gray-600 font-semibold">See all</button>
       </div>
 
-      <div className="flex flex-col items-center space-y-4 px-1 bg-gray-100 rounded-lg">
+      <div className="flex flex-col items-center space-y-2 px-1 bg-base-100 rounded-lg">
         <NewToYouCard props={fakeCards.card1} />
         <NewToYouCard props={fakeCards.card2} />
         <NewToYouCard props={fakeCards.card3} />

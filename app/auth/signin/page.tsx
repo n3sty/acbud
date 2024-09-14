@@ -1,17 +1,14 @@
-import React from "react";
+"use client";
 import ACBudText from "@/app/components/ACBUDtext";
 import Header from "@/app/components/Header";
 import Image from "next/image";
 import LogoText from "@/public/logo-text.svg";
-import { createClient as createClient } from "@/app/utils/supabase/client";
-import { createClient as createServer } from "@/app/utils/supabase/server";
 import { loginGoogle, loginGithub } from "./actions";
 
-async function SignIn() {
+function SignIn() {
   return (
-    <div className="bg-base-200 text-base-content">
+    <div className="bg-base-100 text-base-content">
       <Header />
-
       <div className="flex flex-col items-center justify-center -mt-[10rem] min-h-screen px-14 text-center py-2">
         <Image width={300} height={200} src={LogoText} alt="" />
         <p className="font-sans text-xl">
@@ -21,7 +18,10 @@ async function SignIn() {
           <form>
             <button
               className="btn p-3 h-14 bg-base-300 text-base-content rounded-lg hover:bg-blue-300 hover:text-[1rem] hover:shadow-xl transition-all duration-100 ease-out"
-              formAction={loginGoogle}
+              onClick={(e) => {
+                e.preventDefault();
+                loginGoogle();
+              }}
             >
               <svg
                 className="w-8 h-8"
@@ -53,7 +53,10 @@ async function SignIn() {
           <form>
             <button
               className="btn p-3 h-14 bg-gray-800 text-base-200 rounded-lg hover:bg-black/90 hover:text-[1rem] hover:shadow-xl hover:shadow-white transition-all duration-100 ease-out"
-              formAction={loginGithub}
+              onClick={(e) => {
+                e.preventDefault();
+                loginGithub();
+              }}
             >
               <svg
                 className="w-8 h-8"

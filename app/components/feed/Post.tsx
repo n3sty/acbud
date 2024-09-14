@@ -232,19 +232,19 @@ function Post({
       </div>
 
       {/* IMAGE */}
-      <div className="relative z-0">
+      <div className="relative z-0 ">
         <Image
-          className="object-fill w-full select-none drag-none"
+          className={`object-fill w-full select-none drag-none ${user ?? 'rounded-b-xl'}`}
           src={img}
           alt=""
           width={1920}
           height={1350}
         />
 
-        <div className="absolute bottom-0 w-full">
+        <div className="absolute bottom-0 w-full ">
           <div
-            className="flex w-full items-center justify-between 
-          text-base-content bg-white/60 backdrop-blur-sm rounded-t-md"
+            className={`flex w-full items-center justify-between ${user ?? 'rounded-b-xl'}
+          text-base-content bg-white/60 backdrop-blur-sm rounded-t-md`}
           >
             <p className="px-4 py-2 truncate">
               <span className="font-bold mr-1">{name}</span>

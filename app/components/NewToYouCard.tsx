@@ -22,7 +22,7 @@ function NewPost({ props }: any) {
   };
 
   return (
-    <div className="border bg-gray-200 h-fit w-full rounded-xl">
+    <div className="border bg-base-200 h-fit w-full rounded-xl">
       <div className="flex items-center justify-between px-4 py-2">
         <p className="text-gray-600">
           <span className="font-semibold">{user}</span> posted something new
@@ -47,7 +47,7 @@ function NewFollower({ props }: any) {
   };
 
   return (
-    <div className="border bg-gray-200 h-fit w-full rounded-xl">
+    <div className="border bg-base-200 h-fit w-full rounded-xl">
       <div className="flex items-center justify-between px-4 py-2">
         <p className="text-gray-600">
           <span className="font-semibold">{user}</span> started following you
@@ -72,7 +72,7 @@ function NewLike({ props }: any) {
   };
 
   return (
-    <div className="border bg-gray-200 h-fit w-full rounded-xl">
+    <div className="border bg-base-200 h-fit w-full rounded-xl">
       <div className="flex items-center justify-between px-4 py-2">
         <p className="text-gray-600">
           <span className="font-semibold">{user}</span> liked your post

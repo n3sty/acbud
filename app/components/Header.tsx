@@ -18,17 +18,47 @@ import { User } from "@supabase/supabase-js";
 function Header() {
   // Getters and setters
   const [, setOpen] = useRecoilState(modalState);
-  const [user, setSession] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Initialize router & supabase Client
   const router = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setSession(user);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setUser(session.user);
+      } else {
+        setUser(null);
+      }
     });
+
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [supabase, user]);
+
+  const handleSignOut = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      // router.push("/");
+    } catch (error: any) {
+      alert(error.error_description || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -76,7 +106,11 @@ function Header() {
                   {/* <UserGroupIcon className="navbtn" /> */}
                   {/* <HeartIcon className="navbtn" /> */}
 
-                  <div className="dropdown dropdown-end m-0 p-0">
+                  <div
+                    className={`dropdown dropdown-end m-0 p-0 ${
+                      loading ?? "dropdown-open"
+                    }`}
+                  >
                     <div
                       role="button"
                       tabIndex={0}
@@ -117,9 +151,14 @@ function Header() {
                         </div>
                         <button
                           className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
-                          onClick={() => supabase.auth.signOut()}
+                          onClick={(e) => handleSignOut(e)}
+                          disabled={loading}
                         >
-                          Sign Out
+                          {loading ? (
+                            <span className="loading loading-spinner" />
+                          ) : (
+                            "Sign Out"
+                          )}
                         </button>
                       </div>
                     </div>

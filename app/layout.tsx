@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const noto_sans = Noto_Sans({ subsets: ["latin"] });
-const playfair_display = Playfair_Display({ subsets: ["latin"]});
+const playfair_display = Playfair_Display({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ACBUD - Feedback on your journeys",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Job Siemerink", url: "https://jobsie.me" }],
   openGraph: {
     type: "website",
-    siteName: "ACBUD", 
+    siteName: "ACBUD",
     url: "https://acbud.jobsie.me/",
     title: "ACBUD - Feedback on your journeys",
     description: "ACBUD is a platform for sharing feedback on your journeys.",
@@ -37,18 +37,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <RecoilContextProvider>
-        <html className="bg-base-200" data-theme="light" lang="en">
-          <meta
-            name="viewport"
-            content="initial-scale=1 user-scalable=no viewport-fit=cover height=device-height width=device-width"
-          ></meta>
-          <body className={`${noto_sans.className} subpixel-antialiased`}>
-            {children}
-            <SpeedInsights />
-            <Analytics />
-          </body>
-        </html>
-      </RecoilContextProvider>
+    <RecoilContextProvider>
+      <html data-theme="light" lang="en">
+        <meta
+          name="viewport"
+          content="initial-scale=1 user-scalable=no viewport-fit=cover height=device-height width=device-width"
+        ></meta>
+        <body className={`${noto_sans.className} subpixel-antialiased `}>
+          {children}
+          <SpeedInsights />
+          <Analytics />
+        </body>
+      </html>
+    </RecoilContextProvider>
   );
 }
