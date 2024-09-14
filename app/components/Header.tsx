@@ -11,54 +11,19 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
-import { createClient } from "@/app/utils/supabase/client";
-import { useEffect, useState } from "react";
-import { User } from "@supabase/supabase-js";
+import { useState } from "react";
+import { useSession } from "@/lib/supabase/SessionProvider";
+import { signOut } from "@/lib/supabase/handleSignOut";
 
 function Header() {
   // Getters and setters
   const [, setOpen] = useRecoilState(modalState);
-  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Initialize router & supabase Client
+  // Initialize router & supabase session
   const router = useRouter();
-  const supabase = createClient();
-
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setUser(session.user);
-      } else {
-        setUser(null);
-      }
-    });
-
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [supabase, user]);
-
-  const handleSignOut = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      // router.push("/");
-    } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const session = useSession();
+  const user = session?.user ?? null;
 
   return (
     <div
@@ -151,7 +116,15 @@ function Header() {
                         </div>
                         <button
                           className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
-                          onClick={(e) => handleSignOut(e)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            try { 
+                              setLoading(true);
+                              signOut();
+                            } finally {
+                              setLoading(false);
+                            }
+                          }}
                           disabled={loading}
                         >
                           {loading ? (

@@ -27,7 +27,6 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase";
-import { createClient } from "@/app/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import EmojiPicker, {
   EmojiClickData,
@@ -36,6 +35,7 @@ import EmojiPicker, {
 import { useRecoilState } from "recoil";
 
 function Post({
+  user,
   id,
   name,
   uid,
@@ -43,6 +43,7 @@ function Post({
   img,
   caption,
 }: {
+  user: User | null;
   id: string;
   name: string;
   uid: string;
@@ -50,9 +51,6 @@ function Post({
   img: string;
   caption: string;
 }) {
-  const supabase = createClient();
-
-  const [user, setSession] = useState<User | null>(null);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
@@ -63,14 +61,7 @@ function Post({
   const [hasLiked, setHasLiked] = useState(false);
   const [owner, setOwner] = useState(false);
   const [openEmojiPickerID, setOpenEmojiPickerID] = useRecoilState(emojiPickerState);
-
-  // UPDATE SESSION WITH SUPABASE SSR
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setSession(user);
-    });
-  });
-
+  
   // CHECK IF USER IS THE OWNER OF THE POST
   useEffect(() => {
     if (user?.id === uid) {

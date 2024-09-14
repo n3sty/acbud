@@ -4,6 +4,7 @@ import "./globals.css";
 import RecoilContextProvider from "./components/db/RecoilContextProvider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import SessionProvider from "@/lib/supabase/SessionProvider";
 
 const noto_sans = Noto_Sans({ subsets: ["latin"] });
 const playfair_display = Playfair_Display({ subsets: ["latin"] });
@@ -39,15 +40,17 @@ export default function RootLayout({
   return (
     <RecoilContextProvider>
       <html data-theme="light" lang="en">
+        <SessionProvider>
         <meta
           name="viewport"
           content="initial-scale=1 user-scalable=no viewport-fit=cover height=device-height width=device-width"
         ></meta>
-        <body className={`${noto_sans.className} subpixel-antialiased `}>
-          {children}
-          <SpeedInsights />
-          <Analytics />
-        </body>
+          <body className={`${noto_sans.className} subpixel-antialiased `}>
+            {children}
+            <SpeedInsights />
+            <Analytics />
+          </body>
+        </SessionProvider>
       </html>
     </RecoilContextProvider>
   );

@@ -11,8 +11,9 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { db } from "@/firebase";
+import { User } from "@supabase/supabase-js";
 
-function Posts() {
+function Posts({ user }: { user: User | null }) {
   const [posts, setPosts] = React.useState<
     QueryDocumentSnapshot<DocumentData, DocumentData>[]
   >([]);
@@ -41,6 +42,7 @@ function Posts() {
           userImg={post.data().profileImg}
           img={post.data().image}
           caption={post.data().caption}
+          user={user}
         />
       ))}
     </div>
