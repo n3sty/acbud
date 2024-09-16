@@ -1,7 +1,6 @@
-"use client";
-
+'use client'
 import { modalState } from "@/atoms/modalAtom";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRecoilState } from "recoil";
 import {
   Dialog,
@@ -20,19 +19,13 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
-import { createClient } from "../utils/supabase/client";
-import type { User } from "@supabase/supabase-js";
 import Image from "next/image";
+import { useSession } from "@/lib/supabase/SessionProvider";
 
 function Modal() {
-  const [user, setSession] = useState<User | null>(null);
+  const session = useSession()
+  const user = session?.user ?? null
 
-  const supabase = createClient();
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setSession(user);
-    });
-  });
 
   const [open, setOpen] = useRecoilState(modalState);
   const filePickerRef = React.useRef<HTMLInputElement>(null);
@@ -52,7 +45,7 @@ function Modal() {
       name: user?.user_metadata.name,
       uid: user?.id,
       caption: captionRef.current?.value,
-      profileImg: user?.user_metadata.picture,
+      profileImg: user?.user_metadata.avatar_url,
       timestamp: serverTimestamp(),
     });
 

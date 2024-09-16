@@ -1,55 +1,22 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { createClient } from "@/app/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
+import { useSession } from "@/lib/supabase/SessionProvider";
+import { signOut } from "@/lib/supabase/handleSignOut";
 
 function MiniProfile() {
   const supabase = createClient();
-  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setUser(session.user);
-      } else {
-        setUser(null);
-      }
-    });
-
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [supabase, user]);
-
-  const handleSignOut = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      // router.push("/");
-    } catch (error: any) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const session = useSession();
+  const user = session?.user ?? null;
 
   return (
     user && (
       <div className="flex items-center justify-between mt-14 ml-10 w-full">
         <Image
           className="rounded-full border p-[2px]"
-          src={user?.user_metadata.picture}
+          src={user?.user_metadata.avatar_url}
           alt=""
           width={60}
           height={60}
@@ -62,7 +29,9 @@ function MiniProfile() {
         {!loading ? (
           <button
             className="text-blue-400 text-sm font-semibold"
-            onClick={handleSignOut}
+            onClick={() => {
+              supabase.auth.signOut();
+            }}
           >
             Sign Out
           </button>

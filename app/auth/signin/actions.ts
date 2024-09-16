@@ -5,15 +5,32 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/app/utils/supabase/server";
 
+const getUrl = () => {
+  let url = 
+    process?.env?.NEXT_PUBLIC_SITE_URL ??
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ??
+    "http://localhost:3000";
+
+  url = url.startsWith("http") ? url : `https://${url}`;
+  url = url.endsWith("/") ? url : `${url}/`;
+
+  return url;
+};
+
 export async function loginGoogle() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXTAUTH_URL}/api/auth/callback`,
+      redirectTo: `${getUrl()}api/auth/checkprofile`,
+      queryParams: {
+        prompt: "select_account",
+      },
     },
   });
+
+  console.log("redirecting to", data.url);
 
   if (data.url) {
     redirect(data.url);
@@ -33,7 +50,7 @@ export async function loginGithub() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
     options: {
-      redirectTo: `${process.env.NEXTAUTH_URL}/api/auth/callback`,
+      redirectTo: `${getUrl()}api/auth/checkprofile`,
     },
   });
 

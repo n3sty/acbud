@@ -83,7 +83,7 @@ function Header() {
                     >
                       <div className="w-10 rounded-full">
                         <Image
-                          src={user.user_metadata?.picture}
+                          src={user.user_metadata?.avatar_url}
                           alt="profile picture"
                           width={30}
                           height={30}
@@ -99,7 +99,7 @@ function Header() {
                         {/* Simple user info display */}
                         <div className="flex flex-row w-full justify-between px-2">
                           <Image
-                            src={user.user_metadata?.picture}
+                            src={user.user_metadata?.avatar_url}
                             alt="profile picture"
                             width={60}
                             height={60}
@@ -115,10 +115,16 @@ function Header() {
                           </div>
                         </div>
                         <button
-                          className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-4 "
+                          className="btn btn-sm btn-outline self-end text-sm"
+                          onClick={() => router.push(`/profile/${user.id}`)}
+                        >
+                          View Profile
+                        </button>
+                        <button
+                          className="btn btn-sm btn-outline hover:bg-blue-400 hover:border-blue-400 self-end text-blue-400 mt-2 "
                           onClick={(e) => {
                             e.preventDefault();
-                            try { 
+                            try {
                               setLoading(true);
                               signOut();
                             } finally {

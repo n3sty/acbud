@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { emojiPickerState } from "@/atoms/emojiPickerAtom";
 import {
   BookmarkIcon,
-  ChatBubbleOvalLeftIcon,
   EllipsisHorizontalIcon,
   FaceSmileIcon,
   HeartIcon,

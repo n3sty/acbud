@@ -1,4 +1,5 @@
-import { createClient } from "@/app/utils/supabase/server";
+"use client";
+import { createClient } from "@/app/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import React from "react";
 
@@ -7,8 +8,6 @@ const SessionContext = React.createContext<Session | null>(null);
 function SessionProvider({children}: {children: React.ReactNode}) {
   const supabase = createClient();
   const [session, setSession] = React.useState<Session | null>(null);
-
-  const test = 0
 
   React.useEffect(() => {
     const {
@@ -23,7 +22,7 @@ function SessionProvider({children}: {children: React.ReactNode}) {
 
     return () => { subscription.unsubscribe() }
 
-  }, [test, supabase]);
+  }, [supabase]);
 
   return (
     <SessionContext.Provider value={session}>

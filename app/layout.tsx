@@ -39,19 +39,19 @@ export default function RootLayout({
 }>) {
   return (
     <RecoilContextProvider>
-      <html data-theme="light" lang="en">
-        <SessionProvider>
-        <meta
-          name="viewport"
-          content="initial-scale=1 user-scalable=no viewport-fit=cover height=device-height width=device-width"
-        ></meta>
+      <SessionProvider>
+        <html data-theme="light" lang="en">
+          <meta
+            name="viewport"
+            content="initial-scale=1 user-scalable=no viewport-fit=cover height=device-height width=device-width"
+          ></meta>
           <body className={`${noto_sans.className} subpixel-antialiased `}>
             {children}
             <SpeedInsights />
             <Analytics />
           </body>
-        </SessionProvider>
-      </html>
+        </html>
+      </SessionProvider>
     </RecoilContextProvider>
   );
 }

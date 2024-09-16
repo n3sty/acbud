@@ -1,20 +1,8 @@
 "use client";
-import { createClient } from "@/app/utils/supabase/client";
-import { infoModalState } from "@/atoms/infoModalAtom";
-import { db, storage } from "@/firebase";
-import { User } from "@supabase/supabase-js";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadString,
-} from "firebase/storage";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useSession } from "@/lib/supabase/SessionProvider";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import Link from "next/link";
+import React, { useState } from "react";
 
 function HorizontalLine() {
   return <hr className="col-span-5 mt-4 mb-3 border-t-1 border-gray-300" />;
@@ -43,36 +31,12 @@ function InputField({
   );
 }
 
-function cancelDataChange({
-  router,
-  e,
-}: {
-  router: AppRouterInstance;
-  e: { preventDefault: () => void };
-}) {
-  e.preventDefault();
-  router.back();
-}
-
 function NewUser() {
-  const [user, setSession] = useState<User | null>(null);
-  const supabase = createClient();
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setSession(user);
-    });
-  });
-
-  const router = useRouter();
-
+  const session = useSession();
+  const user = session?.user ?? null;
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useRecoilState(infoModalState);
-
   const filePickerRef = React.useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = React.useState<
-    string | ArrayBuffer | null
-  >(null);
+  const [selectedFile, setSelectedFile] = React.useState<string | null>(null);
 
   const addImageToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -84,103 +48,104 @@ function NewUser() {
     }
   };
 
+  // TODO: Transfer to supabase
   const submitDataChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loading) return;
+    // setLoading(true);
 
-    setLoading(true);
+    // const formData = new FormData(e.currentTarget);
+    // const dataToChange = Object.fromEntries(formData.entries());
 
-    const formData = new FormData(e.currentTarget);
-    const dataToChange = Object.fromEntries(formData.entries());
+    // // Get all the values that are not empty
+    // const filteredDataToChange = Object.fromEntries(
+    //   Object.entries(dataToChange).filter(([key, value]) => value !== "")
+    // );
 
-    // Get all the values that are not empty
-    const filteredDataToChange = Object.fromEntries(
-      Object.entries(dataToChange).filter(([key, value]) => value !== "")
-    );
+    // // Update the user data in the database
+    // await updateDoc(doc(db, "users", user?.id!), {
+    //   ...filteredDataToChange,
+    // });
 
-    // Update the user data in the database
-    await updateDoc(doc(db, "users", user?.id!), {
-      ...filteredDataToChange,
-    });
+    // // Update the session data
+    // // const entries = Object.entries(filteredDataToChange);
+    // // const filteredArray = entries.filter(([key, value]) => key !== "image");
 
-    // Update the session data
-    // const entries = Object.entries(filteredDataToChange);
-    // const filteredArray = entries.filter(([key, value]) => key !== "image");
+    // // await supabase.auth.updateUser(filteredArray);
 
-    // await supabase.auth.updateUser(filteredArray);
+    // // } else {
+    // //  Handle empty values here
+    // //   setLoading(false);
+    // //   return router.push(origin);
+    // // }
 
-    // } else {
-    //  Handle empty values here
-    //   setLoading(false);
-    //   return router.push(origin);
+    // if (selectedFile) {
+    //   // Upload the image to firebase storage with the user ID
+    //   const imageRef = ref(storage, `users/${user?.id}/image`);
+
+    //   // Get the image URL from firebase storage and update the user image
+    //   await uploadString(imageRef, selectedFile as string, "data_url").then(
+    //     async (snapshot) => {
+    //       const downloadURL = await getDownloadURL(imageRef);
+    //       await updateDoc(doc(db, "users", user?.id as string), {
+    //         image: downloadURL,
+    //       });
+    //     }
+    //   );
+
+    //   // Update the session data
+    //   // await update({ image: selectedFile });
+
+    //   // Redirect to the homepage with a success message
+    //   setOpen(true);
+    //   router.push("/?success=true&message=Your profile has been updated!");
     // }
 
-    if (selectedFile) {
-      // Upload the image to firebase storage with the user ID
-      const imageRef = ref(storage, `users/${user?.id}/image`);
+    // // Reset the loading state and selected file
+    // setLoading(false);
+    // setSelectedFile(null);
 
-      // Get the image URL from firebase storage and update the user image
-      await uploadString(imageRef, selectedFile as string, "data_url").then(
-        async (snapshot) => {
-          const downloadURL = await getDownloadURL(imageRef);
-          await updateDoc(doc(db, "users", user?.id as string), {
-            image: downloadURL,
-          });
-        }
-      );
-
-      // Update the session data
-      // await update({ image: selectedFile });
-
-      // Redirect to the homepage with a success message
-      setOpen(true);
-      router.push("/?success=true&message=Your profile has been updated!");
-    }
-
-    // Reset the loading state and selected file
-    setLoading(false);
-    setSelectedFile(null);
-
-    router.push("/");
+    // router.push("/");
   };
 
+  // TODO: Transfer to supabase
   const deleteUserData = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     if (loading) return;
 
-    setLoading(true);
+    // setLoading(true);
 
-    // Delete the user image from firebase storage if it exists
-    if (user?.user_metadata.picture) {
-      const imageRef = ref(storage, `users/${user?.id}/image`);
+    // // Delete the user image from firebase storage if it exists
+    // if (user?.user_metadata.picture) {
+    //   const imageRef = ref(storage, `users/${user?.id}/image`);
 
-      console.log(imageRef);
+    //   console.log(imageRef);
 
-      await uploadString(imageRef, selectedFile as string, "data_url").then(
-        async (snapshot) => {
-          await deleteObject(imageRef)
-            .then(() => {
-              console.log("Image deleted successfully!");
-            })
-            .catch((error) => {
-              console.error("Error removing image: ", error);
-            });
-        }
-      );
-    }
+    //   await uploadString(imageRef, selectedFile as string, "data_url").then(
+    //     async (snapshot) => {
+    //       await deleteObject(imageRef)
+    //         .then(() => {
+    //           console.log("Image deleted successfully!");
+    //         })
+    //         .catch((error) => {
+    //           console.error("Error removing image: ", error);
+    //         });
+    //     }
+    //   );
+    // }
 
-    // Delete the user data from the database
-    await deleteDoc(doc(db, "users", user?.id as string));
+    // // Delete the user data from the database
+    // await deleteDoc(doc(db, "users", user?.id as string));
 
-    // Redirect to the homepage with a success message
-    setOpen(true);
-    router.push("/?success=true&message=Your profile has been deleted!");
+    // // Redirect to the homepage with a success message
+    // setOpen(true);
+    // router.push("/?success=true&message=Your profile has been deleted!");
 
-    // Reset the loading state and selected file
-    setLoading(false);
-    setSelectedFile(null);
+    // // Reset the loading state and selected file
+    // setLoading(false);
+    // setSelectedFile(null);
   };
 
   return (
@@ -194,7 +159,7 @@ function NewUser() {
             <div className="flex justify-between">
               <Image
                 className="rounded-full shadow-lg shadow-black/15 z-10 border-4 p-[1.5px] border-base-200"
-                src={user?.user_metadata.picture as string}
+                src={user?.user_metadata.avatar_url}
                 width={120}
                 height={120}
                 alt=""
@@ -248,23 +213,23 @@ function NewUser() {
                 span={4}
               />
 
-              {/* Username
+              {/* Username */}
               <HorizontalLine />
               <OptionHeader option="Username" />
               <div className="join mx-2 col-span-4">
                 <input
                   type="text"
-                  className="input text-sm text-gray-500 left-[1%] right-[1%] input-bordered focus:outline-none text-end select-none bg-base-200 join-item"
-                  value="https://acbud.jobsie.me/"
+                  className="input text-md text-gray-500 w-full input-bordered focus:outline-none text-start select-none bg-base-200 join-item"
+                  value="acbud.jobsie.me/profile/"
                   readOnly
                 />
                 <input
-                  name="name"
+                  name="username"
                   type="text"
-                  placeholder={session?.user?.name as string}
-                  className="input input-bordered w-full focus:outline-none join-item"
+                  placeholder={user?.user_metadata.name as string}
+                  className="input input-bordered focus:outline-none join-item"
                 />
-              </div> */}
+              </div>
 
               {/* Profile photo */}
               <HorizontalLine />
@@ -320,12 +285,9 @@ function NewUser() {
                   Delete user
                 </button>
                 <div className="flex justify-end pr-2 gap-4">
-                  <button
-                    className="profilebtn"
-                    onClick={(e) => cancelDataChange({ router, e })}
-                  >
+                  <Link href={`/`} className="profilebtn">
                     Cancel
-                  </button>
+                  </Link>
                   <button
                     type="submit"
                     className="profilebtn bg-black text-white hover:bg-black hover:text-white"
